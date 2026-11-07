@@ -1340,20 +1340,50 @@ var EXH_PDESC = {
   }catch(e){}
 
   /* ── Fiches dans les fenêtres « En savoir plus » ── */
-  function fiche(p){
-    var tp = tipProd(p), nom = esc(nomAff(p.nom));
-    return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(201,169,110,.3)"><span style="color:var(--brun);font-weight:700;font-size:14px">' + (tp ? tipHtml(nom, tp) : nom) + '</span><span style="font-weight:700;color:var(--terra);white-space:nowrap">' + eur(p.prix) + '</span></div>';
+  var LIGNE = 'padding:11px 0;border-bottom:1px solid rgba(201,169,110,.3)';
+  function titrePrix(nom, prix){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><strong style="color:var(--brun);font-size:14px">' + esc(nom) + '</strong><span style="font-weight:700;color:var(--terra);white-space:nowrap">' + eur(prix) + '</span></div>'; }
+  function texte(i){
+    var h = '';
+    if(i.d) h += '<div style="margin-top:4px">' + esc(i.d) + '</div>';
+    if(i.v) h += '<ul style="margin:6px 0 0;padding-left:18px">' + i.v.map(function(v){ return '<li><strong style="color:var(--brun-m)">' + esc(v[0]) + '</strong> : ' + esc(v[1]) + '</li>'; }).join("") + '</ul>';
+    if(i.u) h += '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--brun-m)">Utilisation :</strong> ' + esc(i.u) + '</div>';
+    if(i.w) h += '<div style="margin-top:4px;font-size:12px;font-style:italic"><strong style="color:var(--brun-m);font-style:normal">À savoir :</strong> ' + esc(i.w) + '</div>';
+    return h;
   }
-  function liste(arr){ return '<div><p style="font-size:12px;margin:0 0 4px;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur un produit pour lire son descriptif.</p>' + arr.map(fiche).join("") + '</div>'; }
+  function fiche(p){ return '<div style="' + LIGNE + '">' + titrePrix(nomAff(p.nom), p.prix) + texte(info(p.nom) || {}) + '</div>'; }
+  function liste(arr){ return '<div>' + arr.map(fiche).join("") + '</div>'; }
   function chips(list){ return '<div>' + list.map(function(x){ var t = tipNotes(x); return t ? tipHtml(esc(x.replace(/\s*-\s*/, " · ")), t, "xchip") : '<span class="xchip" style="cursor:default">' + esc(x) + '</span>'; }).join("") + '</div>'; }
-  function refsParfum(){
-    var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.p : {}, g = {};
-    Object.keys(NT).forEach(function(c){ var e = NT[c]; (g[e.c] = g[e.c] || []).push(c + " - " + e.nom); });
-    return Object.keys(g).map(function(c){ var n = c.split(" — "); return '<p style="margin:12px 0 4px"><strong style="color:var(--brun-m)">' + esc(n[0]) + '</strong>' + (n[1] ? ' · ' + esc(n[1]) : '') + '</p>' + chips(g[c]); }).join("");
+  function groupe(titre, list){ return list.length ? '<p style="margin:10px 0 2px;font-size:13px"><strong style="color:var(--brun-m)">' + esc(titre) + '</strong></p>' + chips(list) : ''; }
+  var AIDE = '<p style="font-size:12px;margin:8px 0 0;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur une référence pour découvrir sa famille olfactive, ses notes et sa description.</p>';
+  function refsColl(coll){
+    var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.p : {}, el = [], lui = [], mx = [], MIX = {"217P":1, "223P":1};
+    Object.keys(NT).forEach(function(c){
+      var e = NT[c], x = c + " - " + e.nom;
+      if(e.c.indexOf(coll) !== 0) return;
+      if(coll === "Collection Élite" || MIX[c]) mx.push(x);
+      else if(/Pour elle/.test(e.c) || (coll === "Collection Prestige" && c.charAt(0) === "1")) el.push(x);
+      else lui.push(x);
+    });
+    return AIDE + groupe("Pour elle", el) + groupe("Pour lui", lui) + groupe(coll === "Collection Élite" ? "Fragrances mixtes" : "Mixtes", mx);
   }
+  function listeParfum(arr){
+    return '<div>' + arr.map(function(p){
+      var n = p.nom, h = '<div style="' + LIGNE + '">' + titrePrix(nomAff(n), p.prix);
+      if(/^Eau de Parfum Rechargeable/.test(n)) h += refsColl("Collection Classique");
+      else if(/^Parfum Prestige Rechargeable/.test(n)) h += refsColl("Collection Prestige");
+      else if(/^Parfum .lite Rechargeable/.test(n)) h += refsColl("Collection Élite");
+      else if(!/^Recharge /.test(n)) h += texte(info(n) || {});
+      return h + '</div>';
+    }).join("") + '</div>';
+  }
+  function senteursDe(p){
+    var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.h : {}, l = (p.liste || []).filter(function(x){ return x; });
+    return l.length ? '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--brun-m)">Senteurs disponibles :</strong> ' + esc(l.join(", ")) + '</div>' : '';
+  }
+  function listeHome(arr){ return '<div>' + arr.map(function(p){ return '<div style="' + LIGNE + '">' + titrePrix(nomAff(p.nom), p.prix) + texte(info(p.nom) || {}) + senteursDe(p) + '</div>'; }).join("") + '</div>'; }
   function refsHome(){ var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.h : {}; return chips(Object.keys(NT).sort(function(a, b){ return a.localeCompare(b, "fr"); })); }
   var parfums = function(){ return CATALOGUE_PARFUM.map(function(p){ return {nom:cleN(p.nom), prix:p.prix}; }); };
-  var home = function(){ return CATALOGUE_HOME.map(function(p){ return {nom:cleN(p.nom), prix:p.prix}; }); };
+  var home = function(){ return CATALOGUE_HOME.map(function(p){ return {nom:cleN(p.nom), prix:p.prix, liste:p.liste}; }); };
   var G = {
     "gamme-parfum": parfums, "gamme-home": home,
     "gamme-cosmetique": function(){ return CATALOGUE_BEAUTE["Gamme Cosmétique"]; },
@@ -1364,9 +1394,9 @@ var EXH_PDESC = {
   try{
     Object.keys(G).forEach(function(k){
       var o = EXH_DETAILS_PRESTATIONS[k]; if(!o) return;
-      o.sections.forEach(function(s){ if(s.t === "Tarifs"){ s.t = "Nos produits et leurs prix"; s.d = liste(G[k]()); } });
-      if(k === "gamme-parfum") o.sections.push({t:"Nos parfums et leurs notes olfactives", d:'<span style="font-size:12px;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur une référence pour découvrir sa famille olfactive, ses notes et sa description.</span>' + refsParfum()});
-      if(k === "gamme-home") o.sections.push({t:"Nos senteurs et leurs notes olfactives", d:'<span style="font-size:12px;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur une senteur pour découvrir ses notes et sa description.</span>' + refsHome()});
+      var L2 = k === "gamme-parfum" ? listeParfum : k === "gamme-home" ? listeHome : liste;
+      o.sections.forEach(function(s){ if(s.t === "Tarifs"){ s.t = "Nos produits et leurs prix"; s.d = L2(G[k]()); } });
+      if(k === "gamme-home"){ var it = -1; o.sections.forEach(function(s, n){ if(s.t === "Nos produits et leurs prix") it = n; }); o.sections.splice(it < 0 ? o.sections.length : it, 0, {t:"Nos senteurs et leurs notes olfactives", d:'<span style="font-size:12px;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur une senteur pour découvrir ses notes et sa description.</span>' + refsHome()}); }
       if(TEAM.tel || TEAM.mail) o.pied = (o.pied || "") + '<p style="text-align:center;margin-top:14px"><a href="#" onclick="fermerDetailPrestation();exhOuvrirCmd();return false" class="btn-p" style="text-decoration:none;font-size:13px;padding:10px 20px">Remplir mon bon de commande</a></p>';
     });
   }catch(e){}
