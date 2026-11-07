@@ -1341,19 +1341,19 @@ var EXH_PDESC = {
 
   /* ── Fiches dans les fenêtres « En savoir plus » ── */
   var LIGNE = 'padding:11px 0;border-bottom:1px solid rgba(201,169,110,.3)';
-  function titrePrix(nom, prix){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><strong style="color:var(--brun);font-size:14px">' + esc(nom) + '</strong><span style="font-weight:700;color:var(--terra);white-space:nowrap">' + eur(prix) + '</span></div>'; }
+  function titrePrix(nom, prix){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><strong style="color:var(--terra);font-size:14px">' + esc(nom) + '</strong><span style="font-weight:700;color:var(--terra);white-space:nowrap">' + eur(prix) + '</span></div>'; }
   function texte(i){
     var h = '';
     if(i.d) h += '<div style="margin-top:4px">' + esc(i.d) + '</div>';
-    if(i.v) h += '<ul style="margin:6px 0 0;padding-left:18px">' + i.v.map(function(v){ return '<li><strong style="color:var(--brun-m)">' + esc(v[0]) + '</strong> : ' + esc(v[1]) + '</li>'; }).join("") + '</ul>';
-    if(i.u) h += '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--brun-m)">Utilisation :</strong> ' + esc(i.u) + '</div>';
-    if(i.w) h += '<div style="margin-top:4px;font-size:12px;font-style:italic"><strong style="color:var(--brun-m);font-style:normal">À savoir :</strong> ' + esc(i.w) + '</div>';
+    if(i.v) h += '<ul style="margin:6px 0 0;padding-left:18px">' + i.v.map(function(v){ return '<li><strong style="color:var(--terra)">' + esc(v[0]) + '</strong> : ' + esc(v[1]) + '</li>'; }).join("") + '</ul>';
+    if(i.u) h += '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--terra)">Utilisation :</strong> ' + esc(i.u) + '</div>';
+    if(i.w) h += '<div style="margin-top:4px;font-size:12px;font-style:italic"><strong style="color:var(--terra);font-style:normal">À savoir :</strong> ' + esc(i.w) + '</div>';
     return h;
   }
   function fiche(p){ return '<div style="' + LIGNE + '">' + titrePrix(nomAff(p.nom), p.prix) + texte(info(p.nom) || {}) + '</div>'; }
   function liste(arr){ return '<div>' + arr.map(fiche).join("") + '</div>'; }
   function chips(list){ return '<div>' + list.map(function(x){ var t = tipNotes(x); return t ? tipHtml(esc(x.replace(/\s*-\s*/, " · ")), t, "xchip") : '<span class="xchip" style="cursor:default">' + esc(x) + '</span>'; }).join("") + '</div>'; }
-  function groupe(titre, list){ return list.length ? '<p style="margin:10px 0 2px;font-size:13px"><strong style="color:var(--brun-m)">' + esc(titre) + '</strong></p>' + chips(list) : ''; }
+  function groupe(titre, list){ return list.length ? '<p style="margin:10px 0 2px;font-size:13px"><strong style="color:var(--terra)">' + esc(titre) + '</strong></p>' + chips(list) : ''; }
   var AIDE = '<p style="font-size:12px;margin:8px 0 0;color:var(--gris)">' + (survol ? "Passez la souris" : "Touchez") + ' sur une référence pour découvrir sa famille olfactive, ses notes et sa description.</p>';
   function refsColl(coll){
     var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.p : {}, el = [], lui = [], mx = [], MIX = {"217P":1, "223P":1};
@@ -1378,7 +1378,7 @@ var EXH_PDESC = {
   }
   function senteursDe(p){
     var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.h : {}, l = (p.liste || []).filter(function(x){ return x; });
-    return l.length ? '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--brun-m)">Senteurs disponibles :</strong> ' + esc(l.join(", ")) + '</div>' : '';
+    return l.length ? '<div style="margin-top:6px;font-size:12.5px"><strong style="color:var(--terra)">Senteurs disponibles :</strong> ' + esc(l.join(", ")) + '</div>' : '';
   }
   function listeHome(arr){ return '<div>' + arr.map(function(p){ return '<div style="' + LIGNE + '">' + titrePrix(nomAff(p.nom), p.prix) + texte(info(p.nom) || {}) + senteursDe(p) + '</div>'; }).join("") + '</div>'; }
   function refsHome(){ var NT = (typeof EXH_NOTES !== "undefined") ? EXH_NOTES.h : {}; return chips(Object.keys(NT).sort(function(a, b){ return a.localeCompare(b, "fr"); })); }
