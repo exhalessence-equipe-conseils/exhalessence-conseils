@@ -1064,7 +1064,13 @@ body.locked > *:not(#acc-gate){display:none!important}
       <div id="gd-app" hidden>
         <div class="gd-card" id="gd-lienbox" style="margin-bottom:22px">
           <b>Créer mon lien personnel</b>
-          <small>Indiquez vos informations : votre lien personnalisera la page avec votre nom et vos coordonnées (téléphone et e-mail en haut de page). Rien n'est enregistré sur un serveur : tout est dans le lien.</small>
+          <small>Créez votre compte avec un mot de passe que vous choisissez : votre lien personnalisera la page avec votre nom et vos coordonnées (téléphone et e-mail en haut de page). Vos informations sont enregistrées dans votre compte, protégé par votre mot de passe.</small>
+          <div id="eq-connecte" style="display:none;margin-top:10px;padding:10px 12px;background:#fff;border:1px solid rgba(201,169,110,.5);border-radius:var(--r-sm);font-size:14px"><span>Connecté(e) avec <b id="eq-qui"></b></span> <button id="eq-deco" type="button" style="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:14px;font-family:inherit;cursor:pointer;padding:6px 2px">Me déconnecter</button></div>
+          <div id="eq-choix" role="group" aria-label="Choisir une action" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="eq-t-creer" type="button" aria-pressed="true" style="flex:1;min-width:120px;padding:9px 8px;border:1.5px solid var(--dore);border-radius:20px;background:#fff;color:var(--brun);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer">Créer mon compte</button><button id="eq-t-login" type="button" aria-pressed="false" style="flex:1;min-width:120px;padding:9px 8px;border:1.5px solid var(--dore);border-radius:20px;background:#fff;color:var(--brun);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer">J'ai déjà un compte</button><button id="eq-t-oubli" type="button" aria-pressed="false" style="flex:1;min-width:120px;padding:9px 8px;border:1.5px solid var(--dore);border-radius:20px;background:#fff;color:var(--brun);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer">Mot de passe ou lien oublié</button></div>
+          <div id="eq-login" style="display:none"><label for="eq-l-mail" style="display:block;margin-top:12px;font-size:14px;font-weight:700">Votre adresse e-mail</label><input id="eq-l-mail" type="email" autocomplete="username" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><label for="eq-l-mdp" style="display:block;margin-top:10px;font-size:14px;font-weight:700">Votre mot de passe</label><input id="eq-l-mdp" type="password" autocomplete="current-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><button id="eq-l-ok" type="button" class="btn-p" style="border:none;margin-top:10px;justify-content:center;width:100%">Me connecter</button></div>
+          <div id="eq-oubli" style="display:none"><label for="eq-o-mail" style="display:block;margin-top:12px;font-size:14px;font-weight:700">Votre adresse e-mail</label><input id="eq-o-mail" type="email" autocomplete="email" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><small style="display:block;margin-top:6px">Vous recevrez un e-mail avec votre lien personnel et un lien pour choisir un nouveau mot de passe.</small><button id="eq-o-ok" type="button" class="btn-p" style="border:none;margin-top:10px;justify-content:center;width:100%">Recevoir mon lien et mon mot de passe</button></div>
+          <div id="eq-champs">
+          <small id="eq-pre" style="display:none;margin-top:10px;color:#8B2D22">Les informations ci-dessous viennent du lien que vous avez ouvert : vérifiez qu'elles sont bien les vôtres.</small>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><input id="lk-p" type="text" placeholder="Prénom" aria-label="Votre prénom" autocomplete="off" style="flex:1;min-width:130px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><input id="lk-n" type="text" placeholder="Nom" aria-label="Votre nom" autocomplete="off" style="flex:1;min-width:130px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/></div>
           <div style="margin-top:10px;font-size:15px"><label style="margin-right:18px"><input type="radio" name="lk-g" value="f" checked> Madame</label><label><input type="radio" name="lk-g" value="m"> Monsieur</label></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
@@ -1077,6 +1083,10 @@ body.locked > *:not(#acc-gate){display:none!important}
           <small id="lk-cpt" aria-live="polite" style="text-align:right">0 / 1000 caractères</small><input id="lk-u" type="text" readonly aria-label="Votre lien personnel" style="width:100%;margin-top:8px;padding:10px;border:1px solid rgba(201,169,110,.5);border-radius:var(--r-sm);font-size:13px;font-family:inherit;background:#FDFAF7"/>
           <button id="lk-b" type="button" class="btn-p" style="border:none;margin-top:8px;justify-content:center;width:100%">Copier mon lien</button>
           <small id="lk-m" aria-live="polite"></small>
+          <div id="eq-creer"><label for="eq-c-mdp" style="display:block;margin-top:12px;font-size:14px;font-weight:700">Choisissez votre mot de passe (obligatoire)</label><input id="eq-c-mdp" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><label for="eq-c-mdp2" style="display:block;margin-top:10px;font-size:14px;font-weight:700">Écrivez-le une seconde fois</label><input id="eq-c-mdp2" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><small style="display:block;margin-top:6px">Au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (par exemple ! ? # @). Il est brouillé : personne ne peut le lire. Votre adresse e-mail permet de retrouver votre compte.</small><button id="eq-c-ok" type="button" class="btn-p" style="border:none;margin-top:10px;justify-content:center;width:100%">Créer mon compte et mon lien</button></div>
+          <button id="eq-save" type="button" class="btn-p" style="display:none;border:none;margin-top:8px;justify-content:center;width:100%">Enregistrer mes modifications</button>
+          </div>
+          <p id="eq-msg" role="status" aria-live="polite" style="margin-top:10px;font-size:14px;font-weight:700"></p>
         </div>
         <div id="gd-guidebox"><label for="gd-q" style="display:block;font-weight:700;color:var(--brun);margin-bottom:6px;font-size:14px">Rechercher une référence ou un parfum</label>
         <input id="gd-q" type="search" placeholder="Ex. : La vie est belle, 1 million, réf 100…" autocomplete="off" style="width:100%;padding:12px 14px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/>
@@ -1525,6 +1535,84 @@ var EXH_PDESC = {
   $("cmd-qui").textContent = qui;
   $("cmd-ok").textContent = "Merci ! Votre application de message s'est ouverte avec votre commande : appuyez sur « Envoyer ». " + (TEAM.prenom ? TEAM.prenom + " vous contactera" : "Votre conseiller(ère) vous contactera") + " ensuite pour valider la commande avec vous et pour le règlement.";
   rendre();
+})();
+</script>
+<div id="eq-reinit" role="dialog" aria-modal="true" aria-labelledby="eq-r-t" style="display:none;position:fixed;inset:0;background:rgba(44,24,16,.65);z-index:9500;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:26px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(44,24,16,.3);color:var(--brun)">
+    <h2 id="eq-r-t" style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:10px">Choisir un nouveau mot de passe</h2>
+    <div id="eq-r-form"><label for="eq-r-mdp" style="display:block;font-size:14px;font-weight:700">Nouveau mot de passe</label><input id="eq-r-mdp" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><label for="eq-r-mdp2" style="display:block;margin-top:10px;font-size:14px;font-weight:700">Écrivez-le une seconde fois</label><input id="eq-r-mdp2" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><small style="display:block;margin-top:6px">Au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (par exemple ! ? # @).</small><button id="eq-r-ok" type="button" class="btn-p" style="border:none;margin-top:12px;justify-content:center;width:100%">Enregistrer mon nouveau mot de passe</button></div>
+    <p id="eq-r-msg" role="status" aria-live="polite" style="margin-top:10px;font-size:14px;font-weight:700"></p>
+    <button id="eq-r-fermer" type="button" style="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:14px;font-family:inherit;cursor:pointer;padding:6px 2px">Fermer</button>
+  </div>
+</div>
+<style>body.locked > #eq-reinit.ouvert{display:flex!important}</style>
+<script>
+(function(){"use strict";
+var API="https://aphrodite-relais.les-essences-parfumees-d-aphrodite.workers.dev",BASE=location.origin+location.pathname;
+var $=function(i){return document.getElementById(i)};
+var jeton="";try{jeton=localStorage.getItem("exh-eq-jeton")||""}catch(e){}
+function api(route,corps){corps=corps||{};corps.base=BASE;
+ return fetch(API+route,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(corps)})
+  .then(function(r){return r.json().catch(function(){return{erreur:"Réponse inattendue. Réessayez."}})})
+  .catch(function(){return{erreur:"Connexion impossible pour le moment. Vérifiez votre réseau et réessayez."}})}
+function msg(t,ok){var m=$("eq-msg");m.textContent=t||"";m.style.color=ok?"#2F5D50":"#8B2D22"}
+function set(id,v){var e=$(id);e.value=v||"";e.dispatchEvent(new Event("input",{bubbles:true}))}
+function civ(v){var r=document.querySelector('input[name="lk-g"][value="'+(v==="m"?"m":"f")+'"]');if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
+function fill(p){set("lk-p",p.prenom);set("lk-n",p.nom);civ(p.civ);set("lk-c",p.tel);set("lk-e",p.mail);set("lk-r",p.parr);set("lk-d",p.depuis);set("lk-a",p.apropos)}
+function lire(){var g=document.querySelector('input[name="lk-g"]:checked'),v=function(i){return $(i).value.trim()};
+ return{prenom:v("lk-p"),nom:v("lk-n"),civ:g?g.value:"f",tel:v("lk-c"),mail:v("lk-e"),parr:v("lk-r"),depuis:v("lk-d"),apropos:v("lk-a")}}
+function memo(p){try{localStorage.setItem("exh-team",JSON.stringify({c:p.tel||"",p:p.prenom||"",n:p.nom||"",g:p.civ||"f",e:p.mail||"",d:p.depuis||"",a:p.apropos||"",r:p.parr||""}))}catch(e){}}
+var courant="creer";
+function mode(m){courant=m;var co=(m==="connecte");
+ $("eq-champs").style.display=(m==="creer"||co)?"":"none";
+ $("eq-login").style.display=m==="login"?"":"none";
+ $("eq-oubli").style.display=m==="oubli"?"":"none";
+ $("eq-choix").style.display=co?"none":"flex";
+ $("eq-creer").style.display=m==="creer"?"":"none";
+ $("eq-connecte").style.display=co?"":"none";
+ $("eq-save").style.display=co?"flex":"none";
+ ["lk-u","lk-b","lk-m"].forEach(function(i){$(i).style.display=co?"":"none"});
+ $("lk-e").readOnly=co;
+ [["eq-t-creer","creer"],["eq-t-login","login"],["eq-t-oubli","oubli"]].forEach(function(t){$(t[0]).setAttribute("aria-pressed",t[1]===m?"true":"false");$(t[0]).style.background=t[1]===m?"var(--dore-cl)":"#fff"});
+ msg("")}
+function connecte(r,texte){jeton=r.jeton;try{localStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
+ fill(r.profil);memo(r.profil);$("eq-qui").textContent=r.profil.mail;$("eq-pre").style.display="none";mode("connecte");msg(texte,true)}
+function occupe(b,v){b.disabled=v}
+$("eq-t-creer").addEventListener("click",function(){mode("creer")});
+$("eq-t-login").addEventListener("click",function(){mode("login")});
+$("eq-t-oubli").addEventListener("click",function(){mode("oubli")});
+$("eq-c-ok").addEventListener("click",function(){var b=this,d=lire(),m1=$("eq-c-mdp").value,m2=$("eq-c-mdp2").value;
+ if(!d.prenom||!d.nom)return msg("Merci d'écrire votre prénom et votre nom.");
+ if(!d.mail)return msg("Merci d'écrire votre adresse e-mail : elle sert à retrouver votre compte.");
+ if(m1!==m2)return msg("Les deux mots de passe ne sont pas identiques.");
+ d.mdp=m1;occupe(b,true);msg("Création en cours…",true);
+ api("/equipe/creer",d).then(function(r){occupe(b,false);if(r.erreur)return msg(r.erreur);$("eq-c-mdp").value="";$("eq-c-mdp2").value="";connecte(r,"Votre compte est créé. Un e-mail avec votre lien vient de vous être envoyé. Copiez votre lien ci-dessus.")})});
+$("eq-l-ok").addEventListener("click",function(){var b=this;occupe(b,true);msg("Connexion…",true);
+ api("/equipe/connexion",{mail:$("eq-l-mail").value,mdp:$("eq-l-mdp").value}).then(function(r){occupe(b,false);if(r.erreur)return msg(r.erreur);$("eq-l-mdp").value="";connecte(r,"Vous êtes connecté(e).")})});
+$("eq-l-mdp").addEventListener("keydown",function(e){if(e.key==="Enter")$("eq-l-ok").click()});
+$("eq-o-ok").addEventListener("click",function(){var b=this;occupe(b,true);msg("Envoi…",true);
+ api("/equipe/oubli",{mail:$("eq-o-mail").value}).then(function(r){occupe(b,false);r.erreur?msg(r.erreur):msg(r.message,true)})});
+$("eq-save").addEventListener("click",function(){var b=this,d=lire();d.jeton=jeton;occupe(b,true);msg("Enregistrement…",true);
+ api("/equipe/profil-maj",d).then(function(r){occupe(b,false);
+  if(r.erreur){if(/expir/i.test(r.erreur)){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("login")}return msg(r.erreur)}
+  memo(r.profil);msg("Vos informations sont enregistrées. Rechargez la page pour les voir en haut de page.",true)})});
+$("eq-deco").addEventListener("click",function(){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
+// Première ouverture : préremplir avec le lien déjà ouvert (anciens liens), sinon reconnexion automatique
+(function(){var T=window.TEAM||{};
+ if(T.prenom||T.nom||T.mail){set("lk-p",T.prenom);set("lk-n",T.nom);civ(T.g);set("lk-c",T.telAff);set("lk-e",T.mail);set("lk-r",T.parr);set("lk-d",T.depuis);set("lk-a",T.apropos);$("eq-pre").style.display="block"}
+ mode("creer");
+ if(jeton)api("/equipe/moi",{jeton:jeton}).then(function(r){if(r.ok){$("eq-qui").textContent=r.profil.mail;fill(r.profil);$("eq-pre").style.display="none";mode("connecte")}else{jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}}})})();
+// Lien « mot de passe oublié » reçu par e-mail
+(function(){var h=location.hash;if(h.indexOf("#reinit=")!==0)return;var t=decodeURIComponent(h.slice(8)),ov=$("eq-reinit"),rm=$("eq-r-msg");
+ ov.style.display="flex";ov.className="ouvert";setTimeout(function(){$("eq-r-mdp").focus()},50);
+ function fermer(){ov.style.display="none";ov.className="";try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}
+ $("eq-r-fermer").addEventListener("click",fermer);
+ $("eq-r-ok").addEventListener("click",function(){var b=this,a=$("eq-r-mdp").value;
+  if(a!==$("eq-r-mdp2").value){rm.style.color="#8B2D22";return rm.textContent="Les deux mots de passe ne sont pas identiques."}
+  b.disabled=true;rm.style.color="#2F5D50";rm.textContent="Enregistrement…";
+  api("/equipe/reinit",{t:t,mdp:a}).then(function(r){b.disabled=false;
+   if(r.erreur){rm.style.color="#8B2D22";return rm.textContent=r.erreur}
+   $("eq-r-form").style.display="none";rm.textContent="Votre mot de passe est changé. En bas de la page, ouvrez « Créer mon lien perso » (code de l'équipe), puis « J'ai déjà un compte »."})})})();
 })();
 </script>
 </body></html>
