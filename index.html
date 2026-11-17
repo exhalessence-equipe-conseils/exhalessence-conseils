@@ -1084,6 +1084,7 @@ body.locked > *:not(#acc-gate){display:none!important}
           <button id="lk-b" type="button" class="btn-p" style="border:none;margin-top:8px;justify-content:center;width:100%">Copier mon lien</button>
           <small id="lk-m" aria-live="polite"></small>
           <div id="eq-creer"><label for="eq-c-mdp" style="display:block;margin-top:12px;font-size:14px;font-weight:700">Choisissez votre mot de passe (obligatoire)</label><input id="eq-c-mdp" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><label for="eq-c-mdp2" style="display:block;margin-top:10px;font-size:14px;font-weight:700">Écrivez-le une seconde fois</label><input id="eq-c-mdp2" type="password" autocomplete="new-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/><small style="display:block;margin-top:6px">Au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (par exemple ! ? # @). Il est brouillé : personne ne peut le lire. Votre adresse e-mail permet de retrouver votre compte.</small><button id="eq-c-ok" type="button" class="btn-p" style="border:none;margin-top:10px;justify-content:center;width:100%">Créer mon compte et mon lien</button></div>
+          <div id="eq-chmail" style="display:none"><label for="eq-s-mdp" style="display:block;margin-top:12px;font-size:14px;font-weight:700">Votre mot de passe actuel (pour confirmer le changement d'adresse e-mail)</label><input id="eq-s-mdp" type="password" autocomplete="current-password" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"/></div>
           <button id="eq-save" type="button" class="btn-p" style="display:none;border:none;margin-top:8px;justify-content:center;width:100%">Enregistrer mes modifications</button>
           </div>
           <p id="eq-msg" role="status" aria-live="polite" style="margin-top:10px;font-size:14px;font-weight:700"></p>
@@ -1545,6 +1546,14 @@ var EXH_PDESC = {
     <button id="eq-r-fermer" type="button" style="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:14px;font-family:inherit;cursor:pointer;padding:6px 2px">Fermer</button>
   </div>
 </div>
+<div id="eq-pop" role="dialog" aria-modal="true" aria-labelledby="eq-pop-t" style="display:none;position:fixed;inset:0;background:rgba(44,24,16,.65);z-index:6500;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:26px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(44,24,16,.3);color:var(--brun)">
+    <h2 id="eq-pop-t" style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:10px">Créez votre compte</h2>
+    <p style="font-size:15px;line-height:1.6">Pour protéger vos informations personnelles (nom, téléphone, e-mail), choisissez un mot de passe et créez votre compte. Vous pourrez ensuite modifier vos coordonnées quand vous voulez, et retrouver votre lien si vous l'oubliez.</p>
+    <button id="eq-pop-ok" type="button" class="btn-p" style="border:none;margin-top:14px;justify-content:center;width:100%">Créer mon compte maintenant</button>
+    <button id="eq-pop-non" type="button" style="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:14px;font-family:inherit;cursor:pointer;padding:6px 2px">Plus tard</button>
+  </div>
+</div>
 <style>body.locked > #eq-reinit.ouvert{display:flex!important}</style>
 <script>
 (function(){"use strict";
@@ -1562,7 +1571,7 @@ function fill(p){set("lk-p",p.prenom);set("lk-n",p.nom);civ(p.civ);set("lk-c",p.
 function lire(){var g=document.querySelector('input[name="lk-g"]:checked'),v=function(i){return $(i).value.trim()};
  return{prenom:v("lk-p"),nom:v("lk-n"),civ:g?g.value:"f",tel:v("lk-c"),mail:v("lk-e"),parr:v("lk-r"),depuis:v("lk-d"),apropos:v("lk-a")}}
 function memo(p){try{localStorage.setItem("exh-team",JSON.stringify({c:p.tel||"",p:p.prenom||"",n:p.nom||"",g:p.civ||"f",e:p.mail||"",d:p.depuis||"",a:p.apropos||"",r:p.parr||""}))}catch(e){}}
-var courant="creer";
+var courant="creer",mailCompte="",compte=false,team=false,attendu=!!jeton;
 function mode(m){courant=m;var co=(m==="connecte");
  $("eq-champs").style.display=(m==="creer"||co)?"":"none";
  $("eq-login").style.display=m==="login"?"":"none";
@@ -1572,10 +1581,9 @@ function mode(m){courant=m;var co=(m==="connecte");
  $("eq-connecte").style.display=co?"":"none";
  $("eq-save").style.display=co?"flex":"none";
  ["lk-u","lk-b","lk-m"].forEach(function(i){$(i).style.display=co?"":"none"});
- $("lk-e").readOnly=co;
  [["eq-t-creer","creer"],["eq-t-login","login"],["eq-t-oubli","oubli"]].forEach(function(t){$(t[0]).setAttribute("aria-pressed",t[1]===m?"true":"false");$(t[0]).style.background=t[1]===m?"var(--dore-cl)":"#fff"});
  msg("")}
-function connecte(r,texte){jeton=r.jeton;try{localStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
+function connecte(r,texte){jeton=r.jeton;compte=true;mailCompte=r.profil.mail;$("eq-pop").style.display="none";try{localStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
  fill(r.profil);memo(r.profil);$("eq-qui").textContent=r.profil.mail;$("eq-pre").style.display="none";mode("connecte");msg(texte,true)}
 function occupe(b,v){b.disabled=v}
 $("eq-t-creer").addEventListener("click",function(){mode("creer")});
@@ -1592,16 +1600,24 @@ $("eq-l-ok").addEventListener("click",function(){var b=this;occupe(b,true);msg("
 $("eq-l-mdp").addEventListener("keydown",function(e){if(e.key==="Enter")$("eq-l-ok").click()});
 $("eq-o-ok").addEventListener("click",function(){var b=this;occupe(b,true);msg("Envoi…",true);
  api("/equipe/oubli",{mail:$("eq-o-mail").value}).then(function(r){occupe(b,false);r.erreur?msg(r.erreur):msg(r.message,true)})});
-$("eq-save").addEventListener("click",function(){var b=this,d=lire();d.jeton=jeton;occupe(b,true);msg("Enregistrement…",true);
+$("lk-e").addEventListener("input",function(){$("eq-chmail").style.display=(courant==="connecte"&&this.value.trim().toLowerCase()!==mailCompte)?"":"none"});
+$("eq-save").addEventListener("click",function(){var b=this,d=lire();d.jeton=jeton;if($("eq-chmail").style.display!=="none")d.mdp=$("eq-s-mdp").value;occupe(b,true);msg("Enregistrement…",true);
  api("/equipe/profil-maj",d).then(function(r){occupe(b,false);
   if(r.erreur){if(/expir/i.test(r.erreur)){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("login")}return msg(r.erreur)}
-  memo(r.profil);msg("Vos informations sont enregistrées. Rechargez la page pour les voir en haut de page.",true)})});
-$("eq-deco").addEventListener("click",function(){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
+  mailCompte=r.profil.mail;$("eq-qui").textContent=r.profil.mail;$("eq-s-mdp").value="";$("eq-chmail").style.display="none";memo(r.profil);msg("Vos informations sont enregistrées. Rechargez la page pour les voir en haut de page.",true)})});
+$("eq-deco").addEventListener("click",function(){jeton="";compte=false;mailCompte="";$("eq-chmail").style.display="none";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
 // Première ouverture : préremplir avec le lien déjà ouvert (anciens liens), sinon reconnexion automatique
 (function(){var T=window.TEAM||{};
  if(T.prenom||T.nom||T.mail){set("lk-p",T.prenom);set("lk-n",T.nom);civ(T.g);set("lk-c",T.telAff);set("lk-e",T.mail);set("lk-r",T.parr);set("lk-d",T.depuis);set("lk-a",T.apropos);$("eq-pre").style.display="block"}
  mode("creer");
- if(jeton)api("/equipe/moi",{jeton:jeton}).then(function(r){if(r.ok){$("eq-qui").textContent=r.profil.mail;fill(r.profil);$("eq-pre").style.display="none";mode("connecte")}else{jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}}})})();
+ if(jeton)api("/equipe/moi",{jeton:jeton}).then(function(r){if(r.ok){compte=true;mailCompte=r.profil.mail;$("eq-qui").textContent=r.profil.mail;fill(r.profil);$("eq-pre").style.display="none";mode("connecte")}else{jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}}attendu=false;verifier()});else verifier()})();
+// Invitation à créer son compte : seulement pour les conseillères (code équipe reconnu), jamais pour les clientes
+function verifier(){if(!team||compte||attendu)return;try{if(sessionStorage.getItem("eq-plus-tard"))return}catch(e){}$("eq-pop").style.display="flex";setTimeout(function(){$("eq-pop-ok").focus()},50)}
+(function(){var g=$("gd-app");if(!g.hidden){team=true;verifier()}new MutationObserver(function(){if(!g.hidden){team=true;verifier()}}).observe(g,{attributes:true,attributeFilter:["hidden"]});
+ $("eq-pop-ok").addEventListener("click",function(){$("eq-pop").style.display="none";var x=$("exh-guide"),l=$("gd-lienbox");if(x.hidden||l.hidden)$("gd-toggle-l").click();else l.scrollIntoView({behavior:"smooth",block:"start"})});
+ function plusTard(){$("eq-pop").style.display="none";try{sessionStorage.setItem("eq-plus-tard","1")}catch(e){}}
+ $("eq-pop-non").addEventListener("click",plusTard);
+ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("eq-pop").style.display!=="none")plusTard()})})();
 // Lien « mot de passe oublié » reçu par e-mail
 (function(){var h=location.hash;if(h.indexOf("#reinit=")!==0)return;var t=decodeURIComponent(h.slice(8)),ov=$("eq-reinit"),rm=$("eq-r-msg");
  ov.style.display="flex";ov.className="ouvert";setTimeout(function(){$("eq-r-mdp").focus()},50);
