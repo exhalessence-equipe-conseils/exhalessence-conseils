@@ -1061,7 +1061,7 @@ body.locked > *:not(#acc-gate){display:none!important}
   <p>Site de présentation réalisé par des conseillers(ères) indépendant(e)s EXHALESSENCE.<br>Ce site n'est pas le site officiel de la marque.</p>
   <p>Marque et produits : © EXHALESSENCE, Meung-sur-Loire (45).</p>
   <div id="ft-ligne" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start;max-width:980px;margin:20px auto 0">
-  <div class="ft-g" style="flex:1 1 280px;min-width:0"><p style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:8px">Espace conseiller(ère)</p><p style="display:flex;gap:8px;flex-wrap:wrap;justify-content:inherit"><button id="gd-toggle-l" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Mon compte</button><button id="gd-toggle" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Guide olfactif</button></p><p id="ft-aide" style="font-size:11.5px;opacity:.8;margin-top:8px;line-height:1.5">Entrez le code de l'équipe, puis créez votre compte ou identifiez-vous avec votre adresse e-mail et votre mot de passe.</p></div>
+  <div class="ft-g" style="flex:1 1 280px;min-width:0"><p style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:8px">Espace conseiller(ère)</p><p style="display:flex;gap:8px;flex-wrap:wrap;justify-content:inherit"><button id="gd-toggle-l" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Mon compte</button><button id="gd-toggle" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Guide olfactif</button></p><p id="ft-aide" style="font-size:11.5px;opacity:.8;margin-top:8px;line-height:1.5">Accessible une fois connecté(e) avec votre adresse e-mail et votre mot de passe.</p></div>
   <div class="ft-d" style="flex:1 1 280px;min-width:0"><p id="ft-contact" style="font-size:13px;line-height:2"></p><div id="ft-res" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px"></div></div>
 </div>
   <div id="exh-guide" hidden style="scroll-margin-top:80px;background:var(--beige);color:var(--brun);text-align:left;padding:40px 20px;margin:20px -20px -30px">
@@ -1605,7 +1605,7 @@ var EXH_PDESC = {
 (function(){"use strict";
 var API="https://aphrodite-relais.les-essences-parfumees-d-aphrodite.workers.dev",BASE=location.origin+location.pathname;
 var $=function(i){return document.getElementById(i)};
-var jeton="";try{jeton=localStorage.getItem("exh-eq-jeton")||""}catch(e){}
+var jeton="";try{jeton=sessionStorage.getItem("exh-eq-jeton")||""}catch(e){}
 function api(route,corps){corps=corps||{};corps.base=BASE;
  return fetch(API+route,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(corps)})
   .then(function(r){return r.json().catch(function(){return{erreur:"Réponse inattendue. Réessayez."}})})
@@ -1615,13 +1615,14 @@ function msg(t,ok){var m=$("eq-msg");m.textContent=t||"";m.style.color=ok?"#2F5D
 function set(id,v){var e=$(id);e.value=v||"";e.dispatchEvent(new Event("input",{bubbles:true}))}
 function civ(v){var r=document.querySelector('input[name="lk-g"][value="'+(v==="m"?"m":"f")+'"]');if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
 var exLogo="",exPhoto="",exPoff="",exRes=[],LB={"instagram":"Instagram","tiktok":"TikTok","facebook-page":"Facebook (page)","facebook-groupe":"Facebook (groupe)","telegram":"Telegram","whatsapp":"WhatsApp","pinterest":"Pinterest","linkedin":"LinkedIn","youtube":"YouTube","autre":"Autre lien"};
-function etatBtns(){["gd-toggle-l","gd-toggle"].forEach(function(i){var b=$(i);if(!b)return;b.setAttribute("aria-disabled","false");b.style.opacity="1";b.style.cursor="pointer"});var a=$("ft-aide");if(a)a.style.display=window.EQ_ID?"none":""}
+function etatBtns(){["gd-toggle-l","gd-toggle"].forEach(function(i){var b=$(i);if(!b)return;b.setAttribute("aria-disabled",window.EQ_ID?"false":"true");b.style.opacity=window.EQ_ID?"1":".45";b.style.cursor=window.EQ_ID?"pointer":"default"});var a=$("ft-aide");if(a)a.style.display=window.EQ_ID?"none":""}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#gd-toggle-l,#gd-toggle");if(b&&!window.EQ_ID){e.stopImmediatePropagation();e.preventDefault()}},true);
 function exId(p){if(p&&p.id){window.EQ_ID=p.id;try{localStorage.setItem("exh-eq-i",p.id)}catch(e){}etatBtns()}}
 function exSet(k,v){if(k==="logo")exLogo=v;else if(k==="poff")exPoff=v;else exPhoto=v}
 function exAff(){[["logo",exLogo],["photo",exPhoto],["poff",exPoff]].forEach(function(a){var z=$("ex-"+a[0]+"-z");z.style.display=a[1]?"block":"none";if(a[1])$("ex-"+a[0]+"-v").src=a[1]});
  var u=$("ex-res");u.textContent="";exRes.forEach(function(r,k){var li=document.createElement("li");li.style.cssText="padding:4px 0";li.appendChild(document.createTextNode((LB[r.t]||r.t)+" : "+r.u+" "));var b=document.createElement("button");b.type="button";b.textContent="Retirer";b.setAttribute("aria-label","Retirer "+(LB[r.t]||r.t));b.style.cssText="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:13px;font-family:inherit;cursor:pointer";b.addEventListener("click",function(){exRes.splice(k,1);exAff()});li.appendChild(b);u.appendChild(li)})}
 function exRemplir(p){$("ex-soc").value=p.societe||"";exLogo=p.logo||"";exPhoto=p.photo||"";exPoff=p.photoOffre||"";exRes=(p.reseaux||[]).slice();$("ex-off").value=p.offres||"";$("ex-fid").value=p.fidelite||"";exAff()}
-function exPrendre(d){d.societe=$("ex-soc").value.trim();d.logo=exLogo;d.photo=exPhoto;d.photoOffre=exPoff;d.reseaux=exRes;d.offres=$("ex-off").value.trim();d.fidelite=$("ex-fid").value.trim()}
+function exPrendre(d){if($("ex-res-u").value.trim())$("ex-res-add").click();d.societe=$("ex-soc").value.trim();d.logo=exLogo;d.photo=exPhoto;d.photoOffre=exPoff;d.reseaux=exRes;d.offres=$("ex-off").value.trim();d.fidelite=$("ex-fid").value.trim()}
 function reduire(file,max,mime,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var w=Math.min(max,im.width),q=.78,m=mime;(function essai(){var h=Math.max(1,Math.round(im.height*w/im.width)),c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d");if(m==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}x.drawImage(im,0,0,w,h);var o=c.toDataURL(m,q);if(m==="image/webp"&&o.indexOf("data:image/webp")!==0){m="image/png";o=c.toDataURL(m)}
  if(o.length>45000){if(m!=="image/png"&&q>.5)q-=.1;else w=Math.round(w*.85);if(w<80)return cb("");return essai()}cb(o)})()};im.onerror=function(){cb("")};im.src=fr.result};fr.onerror=function(){cb("")};fr.readAsDataURL(file)}
 [["logo",360,"image/webp"],["photo",560,"image/jpeg"],["poff",480,"image/jpeg"]].forEach(function(a){$("ex-"+a[0]+"-f").addEventListener("change",function(){var f=this.files&&this.files[0],inp=this;if(!f)return;msg("Image en cours de préparation…",true);reduire(f,a[1],a[2],function(o){inp.value="";if(!o)return msg("Cette image n'a pas pu être utilisée. Essayez-en une autre.");exSet(a[0],o);exAff();msg("Image prête."+rap(),true)})});
@@ -1643,7 +1644,7 @@ function mode(m){courant=m;var co=(m==="connecte");
  ["lk-u","lk-b","lk-m"].forEach(function(i){$(i).style.display=co?"":"none"});$("eq-extra").style.display=(co||m==="creer")?"":"none";var gl=$("gd-toggle-l");if(gl)gl.textContent="Mon compte";$("eq-h").textContent=co?"Mon compte":"Créer mon lien personnel";
  [["eq-t-creer","creer"],["eq-t-login","login"],["eq-t-oubli","oubli"]].forEach(function(t){$(t[0]).setAttribute("aria-pressed",t[1]===m?"true":"false");$(t[0]).style.background=t[1]===m?"var(--dore-cl)":"#fff"});
  msg("")}
-function connecte(r,texte){jeton=r.jeton;compte=true;mailCompte=r.profil.mail;exId(r.profil);if(ouverte)$("eq-pop-ok").style.display="flex";try{localStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
+function connecte(r,texte){jeton=r.jeton;compte=true;mailCompte=r.profil.mail;exId(r.profil);if(ouverte)$("eq-pop-ok").style.display="flex";try{sessionStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
  fill(r.profil);memo(r.profil);$("eq-qui").textContent=r.profil.mail;$("eq-pre").style.display="none";mode("connecte");msg(texte,true)}
 function occupe(b,v){b.disabled=v}
 $("eq-t-creer").addEventListener("click",function(){mode("creer")});
@@ -1671,15 +1672,15 @@ $("eq-o-ok").addEventListener("click",function(){var b=this;occupe(b,true);msg("
 $("lk-e").addEventListener("input",function(){$("eq-chmail").style.display=(courant==="connecte"&&this.value.trim().toLowerCase()!==mailCompte)?"":"none"});
 $("eq-save").addEventListener("click",function(){var b=this,d=lire();d.jeton=jeton;exPrendre(d);if($("eq-chmail").style.display!=="none")d.mdp=$("eq-s-mdp").value;occupe(b,true);msg("Enregistrement…",true);
  api("/equipe/profil-maj",d).then(function(r){occupe(b,false);
-  if(r.erreur){if(/expir/i.test(r.erreur)){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("login")}return msg(r.erreur)}
+  if(r.erreur){if(/expir/i.test(r.erreur)){jeton="";try{sessionStorage.removeItem("exh-eq-jeton")}catch(e){}mode("login")}return msg(r.erreur)}
   mailCompte=r.profil.mail;$("eq-qui").textContent=r.profil.mail;$("eq-s-mdp").value="";$("eq-chmail").style.display="none";memo(r.profil);exRemplir(r.profil);msg("Vos informations sont enregistrées. Rechargez la page pour les voir en haut de page.",true)})});
-$("eq-deco").addEventListener("click",function(){jeton="";compte=false;window.EQ_ID="";etatBtns();mailCompte="";$("eq-chmail").style.display="none";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
+$("eq-deco").addEventListener("click",function(){jeton="";compte=false;window.EQ_ID="";etatBtns();mailCompte="";$("eq-chmail").style.display="none";try{sessionStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
 etatBtns();
 // Première ouverture : préremplir avec le lien déjà ouvert (anciens liens), sinon reconnexion automatique
 (function(){var T=window.TEAM||{};
  if(T.prenom||T.nom||T.mail){set("lk-p",T.prenom);set("lk-n",T.nom);civ(T.g);set("lk-c",T.telAff);set("lk-e",T.mail);set("lk-r",T.parr);set("lk-d",T.depuis);set("lk-a",T.apropos);$("eq-pre").style.display="block"}
  mode("creer");
- if(jeton)api("/equipe/moi",{jeton:jeton}).then(function(r){if(r.ok){compte=true;mailCompte=r.profil.mail;exId(r.profil);$("eq-qui").textContent=r.profil.mail;fill(r.profil);$("eq-pre").style.display="none";mode("connecte")}else{jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}}attendu=false;verifier()});else verifier()})();
+ if(jeton)api("/equipe/moi",{jeton:jeton}).then(function(r){if(r.ok){compte=true;mailCompte=r.profil.mail;exId(r.profil);$("eq-qui").textContent=r.profil.mail;fill(r.profil);$("eq-pre").style.display="none";mode("connecte")}else{jeton="";try{sessionStorage.removeItem("exh-eq-jeton")}catch(e){}}attendu=false;verifier()});else verifier()})();
 // Fenêtre obligatoire : seulement pour les conseillères (code équipe reconnu), jamais pour les clientes
 var ouverte=false,lbParent=null,lbSuite=null;
 function ouvrirPop(){var lb=$("gd-lienbox");var ex=false;try{ex=!!(localStorage.getItem("exh-eq-i")||new URLSearchParams(location.search).get("i"))}catch(e){}
@@ -1727,6 +1728,7 @@ function recolorer(){var n=0;document.querySelectorAll("main > section").forEach
 function mesure(){var h=$("exh-submenu-fixe");if(h)document.documentElement.style.setProperty("--hdr",h.getBoundingClientRect().height+"px")}
 // contacts dans le pied de page (venant du lien)
 (function(){var T=window.TEAM||{},c=$("ft-contact");if(!c)return;
+ if(T.prenom||T.nom){var q=document.createElement("strong");q.textContent=((T.prenom||"")+" "+(T.nom||"")).trim();c.appendChild(q);c.appendChild(document.createElement("br"))}
  if(T.tel){var a=document.createElement("a");a.href="tel:+"+T.tel;a.textContent="📞 "+T.telAff;c.appendChild(a);c.appendChild(document.createElement("br"))}
  if(T.mail){var m=document.createElement("a");m.href="mailto:"+T.mail;m.textContent="✉️ "+T.mail;c.appendChild(m)}})();
 function appliquer(d){
