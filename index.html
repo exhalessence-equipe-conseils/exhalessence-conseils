@@ -656,6 +656,7 @@ body.locked > *:not(#acc-gate){display:none!important}
 .gd-h{font-family:'Playfair Display',serif;color:var(--brun);font-size:17px;margin:18px 0 8px}
 </style>
 <style>#tb-ct[hidden],#lk-rerr[hidden],#cmd-info[hidden],#cmd-ok[hidden]{display:none!important}@media(max-width:700px){.tb-num{display:none}}:root{--beige:#FBF1EC;--blanc:#FFFAF8;--terra:#A1244B;--brun:#46132F;--brun-m:#6E2147;--gris:#6A5360;--dore:#C9A25B;--dore-txt:#8A6218;--sh:0 4px 20px rgba(70,19,47,.10);--sh-lg:0 12px 40px rgba(70,19,47,.18)}.hero-badge,.ey{color:var(--terra)}main>section:nth-of-type(odd){background:#F5EDE3!important}main>section:nth-of-type(even){background:#FFFAF8!important}#exh-submenu-fixe{background:#FFFAF8!important;border-bottom:2px solid var(--dore)!important}</style>
+<style>.ft-g{text-align:left}.ft-d{text-align:right}.ft-d #ft-res{justify-content:flex-end}@media(max-width:640px){.ft-g,.ft-d{text-align:center}.ft-g p{justify-content:center!important}.ft-d #ft-res{justify-content:center}}.ft-ic{display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;text-decoration:none;color:#E8D5A8;font-size:10.5px;line-height:1.2;text-align:center}.ft-ic:focus-visible,#ft-contact a:focus-visible{outline:2px solid #E8D5A8;outline-offset:3px}#ft-contact a{color:#E8D5A8}</style>
 </head>
 <body class="locked">
 <div id="acc-gate" role="dialog" aria-modal="true" aria-labelledby="acc-t" style="position:fixed;inset:0;z-index:9000;background:var(--beige);display:flex;align-items:center;justify-content:center;padding:20px"><div style="max-width:420px;width:100%;background:white;border-radius:var(--r);box-shadow:var(--sh-lg);padding:30px 24px;text-align:center"><div class="ey">✦ Parfums, Beauté & Bien-être</div><h1 id="acc-t" style="font-family:'Playfair Display',serif;color:var(--brun);font-size:24px;margin:6px 0 14px">EXHALESSENCE</h1><label for="acc-code" style="display:block;font-weight:700;color:var(--brun);margin-bottom:6px;font-size:14px">Saisissez votre code d'accès</label><input id="acc-code" type="password" autocomplete="off" style="width:100%;padding:12px 14px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit;margin-bottom:10px"/><button id="acc-ok" type="button" class="btn-p" style="border:none;justify-content:center;width:100%">Accéder à la page</button><p id="acc-err" role="alert" style="color:#8B2D22;font-size:13px;margin-top:8px" hidden></p><p style="color:var(--gris);font-size:13px;line-height:1.7;margin-top:14px">Vous n'avez pas le code ?<br>Contactez votre conseiller(ère) EXHALESSENCE.</p><noscript><p style="color:#8B2D22;font-size:13px">JavaScript est nécessaire pour accéder à cette page.</p></noscript></div></div>
@@ -702,9 +703,7 @@ body.locked > *:not(#acc-gate){display:none!important}
     <div class="si" style="max-width:720px">
       <div class="sh" style="margin-bottom:10px">
         <div class="ey">✦ Ma page</div>
-        <div id="pp-off" hidden><h2 class="st">Mes offres</h2><p class="sdesc" id="pp-off-t" style="white-space:pre-line"></p></div>
-        <div id="pp-fid" hidden style="margin-top:26px"><h2 class="st">Ma carte de fidélité</h2><p class="sdesc" id="pp-fid-t" style="white-space:pre-line"></p></div>
-        <div id="pp-res" hidden style="margin-top:26px"><h2 class="st">Retrouvez-moi</h2><div id="pp-res-l" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px"></div></div>
+        <div id="pp-fid" hidden><h2 class="st">Ma carte de fidélité</h2><p class="sdesc" id="pp-fid-t" style="white-space:pre-line"></p></div>
       </div>
     </div>
   </section>
@@ -894,8 +893,11 @@ body.locked > *:not(#acc-gate){display:none!important}
       <div class="sh">
         <div class="ey">✦ En ce moment</div>
         <h2 class="st">Offre du mois</h2>
-        <p class="sdesc">Quelque chose se prépare pour ce mois de novembre… De belles surprises parfumées arrivent bientôt pour la fin d'année.<br>Revenez très vite les découvrir !</p>
+        <p class="sdesc" id="of-vide">Quelque chose se prépare pour ce mois de novembre… De belles surprises parfumées arrivent bientôt pour la fin d'année.<br>Revenez très vite les découvrir !</p>
       </div>
+      <div id="of-exh" hidden><h3 style="font-family:'Playfair Display',serif;color:var(--brun);font-size:20px;text-align:center;margin:26px 0 8px">Offres EXHALESSENCE</h3><p class="sdesc" id="of-exh-t" style="white-space:pre-line"></p></div>
+      <div id="of-cons" hidden><h3 id="of-cons-h" style="font-family:'Playfair Display',serif;color:var(--brun);font-size:20px;text-align:center;margin:26px 0 8px">Mes offres</h3><p class="sdesc" id="of-cons-t" style="white-space:pre-line"></p><img id="of-photo" alt="" hidden style="margin:16px auto 0;max-width:min(360px,100%);border-radius:16px;box-shadow:0 10px 34px rgba(44,24,16,.18)"/></div>
+
     </div>
   </section>
 <section id="exh-commander" style="scroll-margin-top:80px;background:white;padding:56px 20px">
@@ -1058,7 +1060,10 @@ body.locked > *:not(#acc-gate){display:none!important}
 <footer style="background:var(--brun);color:#E8D5A8;text-align:center;padding:30px 20px;font-size:12.5px;line-height:1.8">
   <p>Site de présentation réalisé par des conseillers(ères) indépendant(e)s EXHALESSENCE.<br>Ce site n'est pas le site officiel de la marque.</p>
   <p>Marque et produits : © EXHALESSENCE, Meung-sur-Loire (45).</p>
-  <p style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button id="gd-toggle-l" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Créer mon lien perso</button><button id="gd-toggle" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Guide olfactif</button></p>
+  <div id="ft-ligne" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start;max-width:980px;margin:20px auto 0">
+  <div class="ft-g" style="flex:1 1 280px;min-width:0"><p style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:8px">Espace conseiller(ère)</p><p style="display:flex;gap:8px;flex-wrap:wrap;justify-content:inherit"><button id="gd-toggle-l" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Mon compte</button><button id="gd-toggle" type="button" aria-controls="exh-guide" style="background:none;border:1px solid #E8D5A8;color:#E8D5A8;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit;opacity:.8">Guide olfactif</button></p><p id="ft-aide" style="font-size:11.5px;opacity:.8;margin-top:8px;line-height:1.5">Accessible une fois connecté(e) avec votre adresse e-mail et votre mot de passe.</p></div>
+  <div class="ft-d" style="flex:1 1 280px;min-width:0"><p id="ft-contact" style="font-size:13px;line-height:2"></p><div id="ft-res" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px"></div></div>
+</div>
   <div id="exh-guide" hidden style="scroll-margin-top:80px;background:var(--beige);color:var(--brun);text-align:left;padding:40px 20px;margin:20px -20px -30px">
     <div class="si" style="max-width:760px">
       <div class="sh">
@@ -1111,6 +1116,10 @@ body.locked > *:not(#acc-gate){display:none!important}
 <button id="ex-res-add" type="button" style="background:none;border:1.5px solid var(--dore);color:var(--brun);border-radius:20px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;margin-top:8px">+ Ajouter ce réseau</button>
 <label for="ex-off" style="display:block;margin-top:14px;font-size:14px;font-weight:700">Mes offres et promotions</label>
 <textarea id="ex-off" rows="3" maxlength="600" placeholder="Ex. : -10 % sur votre première commande jusqu'au 31 décembre" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"></textarea>
+<label for="ex-poff-f" style="display:block;margin-top:14px;font-size:14px;font-weight:700">Une photo pour mes offres</label>
+<input id="ex-poff-f" type="file" accept="image/*" style="margin-top:8px;font-size:14px;max-width:100%"/>
+<div id="ex-poff-z" style="display:none;margin-top:8px"><img id="ex-poff-v" alt="Aperçu de la photo de mon offre" style="max-height:140px;max-width:100%;border-radius:12px;display:block"/><button id="ex-poff-x" type="button" style="background:none;border:1.5px solid var(--dore);color:var(--brun);border-radius:20px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;margin-top:8px">Retirer cette photo</button></div>
+<small>Facultatif. La photo est réduite automatiquement pour rester légère.</small>
 <label for="ex-fid" style="display:block;margin-top:14px;font-size:14px;font-weight:700">Ma carte de fidélité</label>
 <textarea id="ex-fid" rows="2" maxlength="300" placeholder="Ex. : 5 produits achetés, le 6e offert" style="width:100%;margin-top:8px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit"></textarea>
 <small>Photo, logo, réseaux et offres sont visibles par toutes les personnes à qui vous donnez votre lien. Si vous ne remplissez rien, rien ne s'affiche.</small>
@@ -1602,16 +1611,19 @@ function api(route,corps){corps=corps||{};corps.base=BASE;
 function msg(t,ok){var m=$("eq-msg");m.textContent=t||"";m.style.color=ok?"#2F5D50":"#8B2D22"}
 function set(id,v){var e=$(id);e.value=v||"";e.dispatchEvent(new Event("input",{bubbles:true}))}
 function civ(v){var r=document.querySelector('input[name="lk-g"][value="'+(v==="m"?"m":"f")+'"]');if(r){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}}
-var exLogo="",exPhoto="",exRes=[],LB={"instagram":"Instagram","tiktok":"TikTok","facebook-page":"Facebook (page)","facebook-groupe":"Facebook (groupe)","telegram":"Telegram","whatsapp":"WhatsApp","pinterest":"Pinterest","linkedin":"LinkedIn","youtube":"YouTube","autre":"Autre lien"};
-function exId(p){if(p&&p.id){window.EQ_ID=p.id;try{localStorage.setItem("exh-eq-i",p.id)}catch(e){}}}
-function exAff(){[["logo",exLogo],["photo",exPhoto]].forEach(function(a){var z=$("ex-"+a[0]+"-z");z.style.display=a[1]?"block":"none";if(a[1])$("ex-"+a[0]+"-v").src=a[1]});
+var exLogo="",exPhoto="",exPoff="",exRes=[],LB={"instagram":"Instagram","tiktok":"TikTok","facebook-page":"Facebook (page)","facebook-groupe":"Facebook (groupe)","telegram":"Telegram","whatsapp":"WhatsApp","pinterest":"Pinterest","linkedin":"LinkedIn","youtube":"YouTube","autre":"Autre lien"};
+function etatBtns(){["gd-toggle-l","gd-toggle"].forEach(function(i){var b=$(i);if(!b)return;b.setAttribute("aria-disabled",window.EQ_ID?"false":"true");b.style.opacity=window.EQ_ID?"1":".45";b.style.cursor=window.EQ_ID?"pointer":"default"});var a=$("ft-aide");if(a)a.style.display=window.EQ_ID?"none":""}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#gd-toggle-l,#gd-toggle");if(b&&!window.EQ_ID){e.stopImmediatePropagation();e.preventDefault()}},true);
+function exId(p){if(p&&p.id){window.EQ_ID=p.id;try{localStorage.setItem("exh-eq-i",p.id)}catch(e){}etatBtns()}}
+function exSet(k,v){if(k==="logo")exLogo=v;else if(k==="poff")exPoff=v;else exPhoto=v}
+function exAff(){[["logo",exLogo],["photo",exPhoto],["poff",exPoff]].forEach(function(a){var z=$("ex-"+a[0]+"-z");z.style.display=a[1]?"block":"none";if(a[1])$("ex-"+a[0]+"-v").src=a[1]});
  var u=$("ex-res");u.textContent="";exRes.forEach(function(r,k){var li=document.createElement("li");li.style.cssText="padding:4px 0";li.appendChild(document.createTextNode((LB[r.t]||r.t)+" : "+r.u+" "));var b=document.createElement("button");b.type="button";b.textContent="Retirer";b.setAttribute("aria-label","Retirer "+(LB[r.t]||r.t));b.style.cssText="background:none;border:none;color:var(--brun-m);text-decoration:underline;font-size:13px;font-family:inherit;cursor:pointer";b.addEventListener("click",function(){exRes.splice(k,1);exAff()});li.appendChild(b);u.appendChild(li)})}
-function exRemplir(p){$("ex-soc").value=p.societe||"";exLogo=p.logo||"";exPhoto=p.photo||"";exRes=(p.reseaux||[]).slice();$("ex-off").value=p.offres||"";$("ex-fid").value=p.fidelite||"";exAff()}
-function exPrendre(d){d.societe=$("ex-soc").value.trim();d.logo=exLogo;d.photo=exPhoto;d.reseaux=exRes;d.offres=$("ex-off").value.trim();d.fidelite=$("ex-fid").value.trim()}
+function exRemplir(p){$("ex-soc").value=p.societe||"";exLogo=p.logo||"";exPhoto=p.photo||"";exPoff=p.photoOffre||"";exRes=(p.reseaux||[]).slice();$("ex-off").value=p.offres||"";$("ex-fid").value=p.fidelite||"";exAff()}
+function exPrendre(d){d.societe=$("ex-soc").value.trim();d.logo=exLogo;d.photo=exPhoto;d.photoOffre=exPoff;d.reseaux=exRes;d.offres=$("ex-off").value.trim();d.fidelite=$("ex-fid").value.trim()}
 function reduire(file,max,mime,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var w=Math.min(max,im.width),q=.78,m=mime;(function essai(){var h=Math.max(1,Math.round(im.height*w/im.width)),c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d");if(m==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}x.drawImage(im,0,0,w,h);var o=c.toDataURL(m,q);if(m==="image/webp"&&o.indexOf("data:image/webp")!==0){m="image/png";o=c.toDataURL(m)}
  if(o.length>45000){if(m!=="image/png"&&q>.5)q-=.1;else w=Math.round(w*.85);if(w<80)return cb("");return essai()}cb(o)})()};im.onerror=function(){cb("")};im.src=fr.result};fr.onerror=function(){cb("")};fr.readAsDataURL(file)}
-[["logo",360,"image/webp"],["photo",560,"image/jpeg"]].forEach(function(a){$("ex-"+a[0]+"-f").addEventListener("change",function(){var f=this.files&&this.files[0],inp=this;if(!f)return;msg("Image en cours de préparation…",true);reduire(f,a[1],a[2],function(o){inp.value="";if(!o)return msg("Cette image n'a pas pu être utilisée. Essayez-en une autre.");if(a[0]==="logo")exLogo=o;else exPhoto=o;exAff();msg("Image prête. Pensez à appuyer sur « Enregistrer mes modifications ».",true)})});
- $("ex-"+a[0]+"-x").addEventListener("click",function(){if(a[0]==="logo")exLogo="";else exPhoto="";exAff();msg("Image retirée. Appuyez sur « Enregistrer mes modifications ».",true)})});
+[["logo",360,"image/webp"],["photo",560,"image/jpeg"],["poff",480,"image/jpeg"]].forEach(function(a){$("ex-"+a[0]+"-f").addEventListener("change",function(){var f=this.files&&this.files[0],inp=this;if(!f)return;msg("Image en cours de préparation…",true);reduire(f,a[1],a[2],function(o){inp.value="";if(!o)return msg("Cette image n'a pas pu être utilisée. Essayez-en une autre.");exSet(a[0],o);exAff();msg("Image prête. Pensez à appuyer sur « Enregistrer mes modifications ».",true)})});
+ $("ex-"+a[0]+"-x").addEventListener("click",function(){exSet(a[0],"");exAff();msg("Image retirée. Appuyez sur « Enregistrer mes modifications ».",true)})});
 $("ex-res-add").addEventListener("click",function(){var u=$("ex-res-u").value.trim();if(!u)return msg("Collez d'abord le lien du réseau.");if(exRes.length>=12)return msg("12 réseaux au maximum.");if(!/^https?:\/\//i.test(u)){if(/^[a-z][a-z0-9+.\-]*:/i.test(u))return msg("Ce lien n'est pas valable.");u="https://"+u}exRes.push({t:$("ex-res-t").value,u:u});$("ex-res-u").value="";exAff();msg("Réseau ajouté. Appuyez sur « Enregistrer mes modifications ».",true)});
 function fill(p){set("lk-p",p.prenom);set("lk-n",p.nom);civ(p.civ);set("lk-c",p.tel);set("lk-e",p.mail);set("lk-r",p.parr);set("lk-d",p.depuis);set("lk-a",p.apropos);exRemplir(p)}
 function lire(){var g=document.querySelector('input[name="lk-g"]:checked'),v=function(i){return $(i).value.trim()};
@@ -1626,7 +1638,7 @@ function mode(m){courant=m;var co=(m==="connecte");
  $("eq-creer").style.display=m==="creer"?"":"none";
  $("eq-connecte").style.display=co?"":"none";
  $("eq-save").style.display=co?"flex":"none";
- ["lk-u","lk-b","lk-m"].forEach(function(i){$(i).style.display=co?"":"none"});$("eq-extra").style.display=co?"":"none";var gl=$("gd-toggle-l");if(gl)gl.textContent=co?"Mon compte":"Créer mon lien perso";$("eq-h").textContent=co?"Mon compte":"Créer mon lien personnel";
+ ["lk-u","lk-b","lk-m"].forEach(function(i){$(i).style.display=co?"":"none"});$("eq-extra").style.display=co?"":"none";var gl=$("gd-toggle-l");if(gl)gl.textContent="Mon compte";$("eq-h").textContent=co?"Mon compte":"Créer mon lien personnel";
  [["eq-t-creer","creer"],["eq-t-login","login"],["eq-t-oubli","oubli"]].forEach(function(t){$(t[0]).setAttribute("aria-pressed",t[1]===m?"true":"false");$(t[0]).style.background=t[1]===m?"var(--dore-cl)":"#fff"});
  msg("")}
 function connecte(r,texte){jeton=r.jeton;compte=true;mailCompte=r.profil.mail;exId(r.profil);if(ouverte)$("eq-pop-ok").style.display="flex";try{localStorage.setItem("exh-eq-jeton",jeton)}catch(e){}
@@ -1651,7 +1663,8 @@ $("eq-save").addEventListener("click",function(){var b=this,d=lire();d.jeton=jet
  api("/equipe/profil-maj",d).then(function(r){occupe(b,false);
   if(r.erreur){if(/expir/i.test(r.erreur)){jeton="";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("login")}return msg(r.erreur)}
   mailCompte=r.profil.mail;$("eq-qui").textContent=r.profil.mail;$("eq-s-mdp").value="";$("eq-chmail").style.display="none";memo(r.profil);exRemplir(r.profil);msg("Vos informations sont enregistrées. Rechargez la page pour les voir en haut de page.",true)})});
-$("eq-deco").addEventListener("click",function(){jeton="";compte=false;mailCompte="";$("eq-chmail").style.display="none";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
+$("eq-deco").addEventListener("click",function(){jeton="";compte=false;window.EQ_ID="";etatBtns();mailCompte="";$("eq-chmail").style.display="none";try{localStorage.removeItem("exh-eq-jeton")}catch(e){}mode("creer");msg("Vous êtes déconnecté(e).",true)});
+etatBtns();
 // Première ouverture : préremplir avec le lien déjà ouvert (anciens liens), sinon reconnexion automatique
 (function(){var T=window.TEAM||{};
  if(T.prenom||T.nom||T.mail){set("lk-p",T.prenom);set("lk-n",T.nom);civ(T.g);set("lk-c",T.telAff);set("lk-e",T.mail);set("lk-r",T.parr);set("lk-d",T.depuis);set("lk-a",T.apropos);$("eq-pre").style.display="block"}
@@ -1682,11 +1695,29 @@ function verifier(){if(!team||compte||attendu||ouverte)return;ouvrirPop()}
 <script>
 (function(){"use strict";
 var API="https://aphrodite-relais.les-essences-parfumees-d-aphrodite.workers.dev",id="";
-try{var q=new URLSearchParams(location.search),ks=["c","p","n","g","e","d","a","r"];
- if(ks.some(function(k){return q.get(k)})){id=q.get("i")||"";localStorage.setItem("exh-eq-i",id)}else id=localStorage.getItem("exh-eq-i")||""}catch(e){}
-if(!id)return;
 var $=function(i){return document.getElementById(i)};
+var LB={"instagram":"Instagram","tiktok":"TikTok","facebook-page":"Facebook page","facebook-groupe":"Facebook groupe","telegram":"Telegram","whatsapp":"WhatsApp","pinterest":"Pinterest","linkedin":"LinkedIn","youtube":"YouTube","autre":"Mon lien"};
+var W='fill="#fff"',S='fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+function ico(bg,g){return '<svg width="38" height="38" viewBox="0 0 30 30" aria-hidden="true" focusable="false"><circle cx="15" cy="15" r="15" fill="'+bg+'"/>'+g+'</svg>'}
+var ICO={
+ "instagram":ico("#C13584",'<rect x="7.5" y="7.5" width="15" height="15" rx="4.5" '+S+'/><circle cx="15" cy="15" r="3.4" '+S+'/><circle cx="19.6" cy="10.4" r="1" '+W+'/>'),
+ "tiktok":ico("#111",'<path d="M16.6 7.5v10.2a3 3 0 1 1-3-3" '+S+'/><path d="M16.6 7.5c.3 2.4 1.9 3.8 4.2 4" '+S+'/>'),
+ "facebook-page":ico("#1877F2",'<text x="15" y="22.5" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="21" '+W+'>f</text>'),
+ "facebook-groupe":ico("#1877F2",'<circle cx="11" cy="11.5" r="2.8" '+W+'/><circle cx="19" cy="11.5" r="2.8" '+W+'/><path d="M5.5 21.5c0-3 2.4-4.6 5.5-4.6s5.5 1.600 5.500 4.600zM14.500 21.500c.200-2.600 2-4.600 4.500-4.600 3 0 5.500 1.600 5.500 4.600z" '+W+'/>'),
+ "telegram":ico("#229ED9",'<path d="M6.500 14.600L23.200 8l-2.800 14-5.200-3.800-2.400 2.300-.4-4.600z" '+W+'/>'),
+ "whatsapp":ico("#25D366",'<path d="M15 6.800a8.200 8.200 0 0 0-7 12.400l-1 3.800 3.900-1A8.200 8.200 0 1 0 15 6.800z" '+S+'/><path d="M11.800 11.200c-.4.800 0 2.200 1.300 3.700 1.300 1.500 2.700 2.300 3.800 2.300.6 0 1.300-.5 1.400-1l-1.500-.8-.7.5c-.7-.2-1.600-1-2-1.800l.5-.7-.8-1.500c-.5.100-1.500.2-2 .8z" '+W+'/>'),
+ "pinterest":ico("#E60023",'<text x="15" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="19" '+W+'>P</text>'),
+ "linkedin":ico("#0A66C2",'<text x="15" y="21" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="14" '+W+'>in</text>'),
+ "youtube":ico("#FF0000",'<rect x="6" y="9" width="18" height="12" rx="3.500" '+W+'/><path d="M13 12.200v5.600l5-2.800z" fill="#FF0000"/>'),
+ "autre":ico("#6E2147",'<path d="M12.500 17.500l5-5M11 15l-1.500 1.500a3 3 0 0 0 4.200 4.200L15.200 19M19 15l1.500-1.500a3 3 0 0 0-4.200-4.200L14.800 10.800" '+S+'/>')
+};
 function okImg(v){return /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/]+=*$/.test(v||"")}
+function recolorer(){var n=0;document.querySelectorAll("main > section").forEach(function(s){if(s.hidden||!s.isConnected)return;s.style.setProperty("background",n%2===0?"#F5EDE3":"#FFFAF8","important");n++})}
+function mesure(){var h=$("exh-submenu-fixe");if(h)document.documentElement.style.setProperty("--hdr",h.getBoundingClientRect().height+"px")}
+// contacts dans le pied de page (venant du lien)
+(function(){var T=window.TEAM||{},c=$("ft-contact");if(!c)return;
+ if(T.tel){var a=document.createElement("a");a.href="tel:+"+T.tel;a.textContent="📞 "+T.telAff;c.appendChild(a);c.appendChild(document.createElement("br"))}
+ if(T.mail){var m=document.createElement("a");m.href="mailto:"+T.mail;m.textContent="✉️ "+T.mail;c.appendChild(m)}})();
 function appliquer(d){
  if(!d||d.vide)return;
  var br=$("tb-brand");
@@ -1700,15 +1731,20 @@ function appliquer(d){
   var ph=document.createElement("img");ph.src=d.photo;ph.alt="Photo de "+((window.TEAM&&TEAM.prenom)||"votre conseiller(ère)");ph.style.cssText="flex:0 0 auto;width:min(290px,100%);border-radius:16px;box-shadow:0 10px 34px rgba(44,24,16,.18);display:block";
   if(!tx.textContent&&!dep.textContent)g.style.display="none";
   fl.appendChild(g);fl.appendChild(ph);sh.appendChild(fl);ap.hidden=false}
- var off=d.offres||"",fid=d.fidelite||"",rs=(d.reseaux||[]).filter(function(r){return r&&/^https:\/\//.test(r.u||"")});
- if(off){$("pp-off").hidden=false;$("pp-off-t").textContent=off}
- if(fid){$("pp-fid").hidden=false;$("pp-fid-t").textContent=fid}
- var LB={"instagram":"Instagram","tiktok":"TikTok","facebook-page":"Facebook (page)","facebook-groupe":"Facebook (groupe)","telegram":"Telegram","whatsapp":"WhatsApp","pinterest":"Pinterest","linkedin":"LinkedIn","youtube":"YouTube","autre":"Mon lien"};
- if(rs.length){$("pp-res").hidden=false;rs.forEach(function(r){var a=document.createElement("a");a.className="btn-p";a.style.cssText="text-decoration:none;margin:4px";a.target="_blank";a.rel="noopener noreferrer";a.href=r.u;a.textContent=LB[r.t]||"Mon lien";$("pp-res-l").appendChild(a)})}
- if(off||fid||rs.length){$("exh-perso").hidden=false;
-  var m=document.querySelector('a[data-m="exh-bienvenue"]');if(m){var n=m.cloneNode(true);n.setAttribute("data-m","exh-perso");n.textContent=(off||fid)?"Mes offres":"Retrouvez-moi";n.onclick=function(){allerVersAncreExh("exh-perso");return false};m.parentNode.insertBefore(n,m.nextSibling)}}
- var h=$("exh-submenu-fixe");if(h)document.documentElement.style.setProperty("--hdr",h.getBoundingClientRect().height+"px")}
-fetch(API+"/equipe/page",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({i:id})}).then(function(r){return r.json()}).then(appliquer).catch(function(){});
+ if(d.offres||okImg(d.photoOffre)){$("of-cons").hidden=false;$("of-cons-t").textContent=d.offres||"";$("of-cons-h").textContent=(window.TEAM&&TEAM.prenom)?"Les offres de "+TEAM.prenom:"Mes offres";
+  if(okImg(d.photoOffre)){var po=$("of-photo");po.src=d.photoOffre;po.style.display="block";po.hidden=false}
+  $("of-vide").hidden=true}
+ if(d.fidelite){$("pp-fid").hidden=false;$("pp-fid-t").textContent=d.fidelite;$("exh-perso").hidden=false;
+  var m=document.querySelector('a[data-m="exh-bienvenue"]');if(m){var n=m.cloneNode(true);n.setAttribute("data-m","exh-perso");n.textContent="Ma fidélité";n.onclick=function(){allerVersAncreExh("exh-perso");return false};m.parentNode.insertBefore(n,m.nextSibling)}}
+ var rs=(d.reseaux||[]).filter(function(r){return r&&/^https:\/\//.test(r.u||"")}),z=$("ft-res");
+ rs.forEach(function(r){var a=document.createElement("a");a.className="ft-ic";a.target="_blank";a.rel="noopener noreferrer";a.href=r.u;var nom=LB[r.t]||"Mon lien";a.setAttribute("aria-label",nom+" (s'ouvre dans un nouvel onglet)");a.innerHTML=ICO[r.t]||ICO.autre;var sp=document.createElement("span");sp.textContent=nom;a.appendChild(sp);z.appendChild(a)});
+ recolorer();mesure()}
+function post(r,b){return fetch(API+r,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b||{})}).then(function(x){return x.json()})}
+recolorer();
+post("/equipe/offres").then(function(d){if(d&&d.texte){$("of-exh").hidden=false;$("of-exh-t").textContent=d.texte;$("of-vide").hidden=true;recolorer()}}).catch(function(){});
+try{var q=new URLSearchParams(location.search),ks=["c","p","n","g","e","d","a","r"];
+ if(ks.some(function(k){return q.get(k)})){id=q.get("i")||"";localStorage.setItem("exh-eq-i",id)}else id=localStorage.getItem("exh-eq-i")||""}catch(e){}
+if(id)post("/equipe/page",{i:id}).then(appliquer).catch(function(){});
 })();
 </script>
 </body></html>
