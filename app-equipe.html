@@ -26,7 +26,7 @@ button{cursor:pointer}
 #verrou{position:fixed;inset:0;background:var(--creme);display:flex;align-items:flex-start;justify-content:center;padding:24px 18px;z-index:20;overflow:auto}
 #verrou.cache{display:none}
 .carte-v{width:100%;max-width:380px;text-align:center;margin-top:4vh}
-.carte-v .mono{width:96px;height:96px;border-radius:50%;margin:0 auto 8px;display:block}
+.carte-v .mono{width:96px;height:96px;margin:0 auto 8px;display:block}
 .carte-v h2{margin:6px 0 2px;font-size:21px}
 .carte-v .sous{margin:0 0 10px;color:var(--gris);font-size:14.5px;line-height:1.5}
 .carte-v label{display:block;text-align:left;font-size:13.5px;font-weight:700;margin:12px 0 4px}
@@ -102,7 +102,7 @@ h2.vt{font-size:21px;margin:4px 0 10px}
 
 <div id="verrou" role="dialog" aria-modal="true" aria-labelledby="v-titre">
   <div class="carte-v">
-    <img class="mono" src="icone-equipe-192.png" alt="">
+    <img class="mono" src="icone-equipe-logo.png" alt="">
     <h2 id="v-titre">Espace administrateur</h2>
     <p class="sous">Beauté · Parfum</p>
     <p id="v-bonjour" class="sous" hidden></p>
@@ -282,14 +282,14 @@ function lieuMeteo(demande){
   function lance(){
     navigator.geolocation.getCurrentPosition(function(p){
       var la=p.coords.latitude,lo=p.coords.longitude;b.hidden=true;
-      var q1=fetch("https://api.open-meteo.com/forecast?latitude="+la+"&longitude="+lo+"&current=temperature_2m,weather_code&timezone=auto").then(function(r){return r.json()});
+      var q1=fetch("https://api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&current=temperature_2m,weather_code&timezone=auto").then(function(r){if(!r.ok)throw new Error("meteo");return r.json()});
       var q2=fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+la+"&longitude="+lo+"&localityLanguage=fr").then(function(r){return r.json()}).catch(function(){return {}});
       Promise.all([q1,q2]).then(function(a){
         var cur=a[0]&&a[0].current,ville=a[1]&&(a[1].city||a[1].locality)||"";
-        if(!cur){m.textContent="";return}
+        if(!cur){m.textContent=ville?"📍 "+ville:"";return}
         var w=WMO(cur.weather_code);
         m.textContent=w[0]+" "+Math.round(cur.temperature_2m)+" °C"+(w[1]?" · "+w[1]:"")+(ville?" · 📍 "+ville:"");
-      }).catch(function(){m.textContent=""});
+      }).catch(function(){m.textContent="La météo n'a pas pu se charger.";b.hidden=false;b.textContent="Réessayer la météo"});
     },function(err){
       m.textContent="";b.hidden=false;
       b.textContent=err&&err.code===1&&demande?"Localisation refusée : autorisez-la dans les réglages du navigateur, puis touchez ici":"Afficher la météo et ma ville";
