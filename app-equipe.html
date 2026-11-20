@@ -347,8 +347,8 @@ function clients(){
     if(v.statut==="Annulée")return;
     var cle=(v.mail||"").toLowerCase()||String(v.tel||"").replace(/\D/g,"")||norm(v.prenom+" "+v.nom);
     var c=map[cle];
-    if(!c){c=map[cle]={prenom:v.prenom,nom:v.nom,mail:v.mail,tel:v.tel,naissance:v.naissance,n:0,total:0,derniere:v.date};ordre.push(c)}
-    c.n++;c.total+=Number(v.total)||0;
+    if(!c){c=map[cle]={prenom:v.prenom,nom:v.nom,mail:v.mail,tel:v.tel,naissance:v.naissance,n:0,total:0,derniere:v.date,info:""};ordre.push(c)}
+    if(v.lieu==="Fiche client"){c.info=v.note||c.info}else{c.n++;c.total+=Number(v.total)||0}
     if(!c.naissance&&v.naissance)c.naissance=v.naissance;
     if(!c.tel&&v.tel)c.tel=v.tel;if(!c.mail&&v.mail)c.mail=v.mail;
     if(v.date>c.derniere)c.derniere=v.date;
@@ -369,10 +369,9 @@ function actionsContact(c,texteSms){
 }
 
 /* Mes clients */
-var ancien=0;
 VUES.clients=function(el){
   el.innerHTML='<h2 class="vt">Mes clients</h2><button class="btn pleine sec" id="c-ajout" type="button" style="margin:0 0 12px">+ Ajouter un client(e) que j\'ai déjà</button><div id="c-z"></div>';
-  $("c-ajout").addEventListener("click",function(){ancien=1;va("bon")});
+  $("c-ajout").addEventListener("click",function(){va("fiche")});
   chargement($("c-z"),function(){
     var L=clients();
     if(!L.length){$("c-z").innerHTML='<p class="vide">Aucun client(e) pour l\'instant.<br>Ils apparaissent dès que vous enregistrez une vente dans « Bon de commande ».</p>';return}
@@ -383,7 +382,7 @@ VUES.clients=function(el){
         if(q&&norm(c.prenom+" "+c.nom+" "+c.mail+" "+c.tel).indexOf(q)<0)return;
         n++;
         h+='<div class="boite"><div class="l1"><strong>'+esc(c.prenom+" "+c.nom)+'</strong><span>'+esc(eur(c.total))+'</span></div>'+
-          '<div class="l2">'+c.n+' achat'+(c.n>1?"s":"")+' · dernier : '+esc(jolie(c.derniere))+(c.naissance?' · 🎂 '+esc(c.naissance):'')+'</div>'+
+          '<div class="l2">'+(c.n?c.n+' achat'+(c.n>1?"s":"")+' · dernier : '+esc(jolie(c.derniere)):'Fiche client')+(c.naissance?' · 🎂 '+esc(c.naissance):'')+'</div>'+(c.info?'<div class="l2">'+esc(c.info)+'</div>':'')+
           '<div class="l2">'+esc([c.tel,c.mail].filter(Boolean).join(" · "))+'</div>'+actionsContact(c)+'</div>';
       });
       $("c-n").textContent=n+" client(e)"+(n>1?"s":"");
@@ -425,7 +424,8 @@ VUES.anniv=function(el){
 /* Mes commandes */
 VUES.cmd=function(el){
   el.innerHTML='<h2 class="vt">Mes commandes</h2><div id="m-z"></div>';
-  chargement($("m-z"),function(L){
+  chargement($("m-z"),function(L0){
+    var L=L0.filter(function(v){return v.lieu!=="Fiche client"});
     if(!L.length){$("m-z").innerHTML='<p class="vide">Aucune vente enregistrée pour l\'instant.</p>';return}
     var tot=0,n=0;L.forEach(function(v){if(v.statut!=="Annulée"){tot+=Number(v.total)||0;n++}});
     var h='<div class="aide"><b>'+n+'</b> vente'+(n>1?"s":"")+' · total <b>'+esc(eur(tot))+'</b></div>';
@@ -552,7 +552,40 @@ var memoOk=0;
 function memo(){if(memoOk||!jeton)return;memoOk=1;var lignesM=[];
  post("/equipe/moi",{}).then(function(r){if(r.ok&&r.profil){var p=r.profil;moi=p;if(p.offres)lignesM.push("Mes offres : "+p.offres+(p.offreDu||p.offreAu?" (valable "+(p.offreDu?"du "+p.offreDu+" ":"")+(p.offreAu?"au "+p.offreAu:"")+")":""));if(p.fidelite)lignesM.push("Ma carte de fidélité : "+p.fidelite)}return post("/equipe/offres",{})}).then(function(r){if(r&&r.texte)lignesM.push("Offres EXHALESSENCE :\n"+r.texte);if(lignesM.length){$("bn-memo").hidden=false;$("bn-memo").textContent=lignesM.join("\n")}}).catch(function(){memoOk=0})}
   razBon();memo();
-  if(ancien){ancien=0;$("bn-titre").textContent="Ajouter un client(e) que j'ai déjà";$("bn-date").value="";$("bn-date").placeholder="Date de sa commande, ex. 15/09/2026";var sm=el.querySelector("#gd-bon small")||el.querySelector("small");if(sm)sm.textContent="Écrivez la date de sa commande (même ancienne), ses coordonnées, sa date de naissance et ce qu'il ou elle a commandé. Il ou elle apparaîtra dans « Mes clients » et dans votre page, avec le suivi de ses achats. La date, le prénom, le nom, et l'e-mail ou le téléphone sont obligatoires."}
+};
+
+
+/* Ajouter un client(e) déjà existant */
+VUES.fiche=function(el){
+  var I='style="width:100%;margin-top:6px;padding:10px;border:1.5px solid var(--dore);border-radius:var(--r-sm);font-size:16px;font-family:inherit;background:#fff"';
+  var Lb='style="display:block;margin-top:12px;font-size:14px;font-weight:700"';
+  el.innerHTML='<h2 class="vt">Ajouter un client(e) que j\'ai déjà</h2><div class="gd-card"><small>Notez ici un client(e) que vous avez déjà : il ou elle apparaît dans « Mes clients », et son anniversaire s\'affichera tout seul. Le prénom, le nom, et l\'e-mail ou le téléphone sont obligatoires.</small>'+
+  '<div class="deux"><div><label for="f-p" '+Lb+'>Prénom (obligatoire)</label><input id="f-p" autocomplete="off" '+I+'></div><div><label for="f-n" '+Lb+'>Nom (obligatoire)</label><input id="f-n" autocomplete="off" '+I+'></div></div>'+
+  '<label for="f-d" '+Lb+'>Date de naissance (facultatif)</label><input id="f-d" inputmode="numeric" placeholder="05/03/1980" autocomplete="off" '+I+'>'+
+  '<div class="deux"><div><label for="f-e" '+Lb+'>E-mail (ou téléphone)</label><input id="f-e" type="email" autocomplete="off" '+I+'></div><div><label for="f-t" '+Lb+'>Téléphone (ou e-mail)</label><input id="f-t" type="tel" autocomplete="off" '+I+'></div></div>'+
+  '<label for="f-ad" '+Lb+'>Adresse (facultatif)</label><input id="f-ad" maxlength="120" autocomplete="off" '+I+'>'+
+  '<label for="f-ad2" '+Lb+'>Complément d\'adresse (facultatif)</label><input id="f-ad2" maxlength="120" autocomplete="off" '+I+'>'+
+  '<div class="deux"><div><label for="f-cp" '+Lb+'>Code postal</label><input id="f-cp" inputmode="numeric" maxlength="10" autocomplete="off" '+I+'></div><div style="flex:2"><label for="f-vl" '+Lb+'>Ville</label><input id="f-vl" maxlength="60" autocomplete="off" '+I+'></div></div>'+
+  '<label for="f-cmd" '+Lb+'>Déjà commandé (facultatif)</label><textarea id="f-cmd" rows="3" maxlength="150" placeholder="Ex. : parfum 200, crème visage, en septembre 2025" '+I+'></textarea>'+
+  '<label for="f-fid" '+Lb+'>Programme de fidélité, points gagnés ou bon cadeau (facultatif)</label><input id="f-fid" maxlength="100" autocomplete="off" '+I+'>'+
+  '<label for="f-note" '+Lb+'>Note (facultatif)</label><textarea id="f-note" rows="2" maxlength="150" '+I+'></textarea>'+
+  '<p id="f-msg" role="status" aria-live="polite" style="margin-top:10px;font-size:14px"></p>'+
+  '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="f-save" type="button" class="btn-p" style="border:none;cursor:pointer">Enregistrer ce client(e)</button><button id="f-new" type="button" class="btn sec" hidden style="margin:0">Ajouter un autre client(e)</button></div></div>';
+  var ids=["f-p","f-n","f-d","f-e","f-t","f-ad","f-ad2","f-cp","f-vl","f-cmd","f-fid","f-note"];
+  $("f-new").addEventListener("click",function(){ids.forEach(function(i){$(i).value=""});$("f-msg").textContent="";$("f-new").hidden=true;$("f-save").hidden=false;$("f-p").focus()});
+  $("f-save").addEventListener("click",function(){
+    var m=$("f-msg");
+    if(!$("f-p").value.trim()||!$("f-n").value.trim())return msg("f-msg","Merci d'écrire le prénom et le nom.",1);
+    if(!$("f-e").value.trim()&&!$("f-t").value.trim())return msg("f-msg","Merci d'écrire l'e-mail ou le téléphone.",1);
+    var inf=[];if($("f-cmd").value.trim())inf.push("Déjà commandé : "+$("f-cmd").value.trim());if($("f-fid").value.trim())inf.push("Fidélité : "+$("f-fid").value.trim());if($("f-note").value.trim())inf.push($("f-note").value.trim());
+    $("f-save").disabled=true;msg("f-msg","Enregistrement en cours…");
+    post("/equipe/vente-ajout",{date:auj(),lieu:"Fiche client",prenom:$("f-p").value,nom:$("f-n").value,naissance:$("f-d").value,mail:$("f-e").value,tel:$("f-t").value,adresse:$("f-ad").value,complement:$("f-ad2").value,cp:$("f-cp").value,ville:$("f-vl").value,lignes:[{a:"Fiche client",q:1,p:0}],offre:"Aucune",reglement:"Autre",livraison:"Remis sur place",note:inf.join(" · ").slice(0,300)}).then(function(r){
+      $("f-save").disabled=false;
+      if(r._s===401){verrouille("Session expirée : entrez à nouveau votre mot de passe.");return}
+      if(!r.ok)return msg("f-msg",r.erreur||"L'enregistrement n'a pas fonctionné. Réessayez.",1);
+      ventes=null;msg("f-msg","Client(e) enregistré(e). Vous le ou la retrouvez dans « Mes clients ».");$("f-save").hidden=true;$("f-new").hidden=false;
+    }).catch(function(){$("f-save").disabled=false;msg("f-msg","Pas de connexion : rien n'est enregistré. Réessayez.",1)});
+  });
 };
 
 /* Mon site internet */
