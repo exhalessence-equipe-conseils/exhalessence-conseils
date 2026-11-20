@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#3D2B2E">
+<meta name="theme-color" content="#46132F">
 <title>Espace administrateur — Équipe EXHALESSENCE</title>
 <link rel="manifest" href="manifest-app-equipe.json">
 <link rel="icon" href="icone-equipe-192.png">
 <link rel="apple-touch-icon" href="icone-equipe-192.png">
 <style>
-:root{--dore:#C9A96E;--r-sm:12px;--creme:#FDFAF7;--beige:#F5EDE3;--brun:#2C1810;--terra:#9E5238;--teal:#3A766E;--or:#C9A96E;--gris:#6B5E55;--bord:#3D2B2E}
+:root{--dore:#C9A25B;--r-sm:12px;--creme:#FFFAF8;--beige:#FBF1EC;--brun:#46132F;--terra:#A1244B;--teal:#3A766E;--or:#C9A25B;--gris:#6A5360;--bord:#46132F}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--creme);color:var(--brun);font-family:'Lato','Segoe UI',Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
 body{min-height:100dvh;display:flex;flex-direction:column}
@@ -30,7 +30,7 @@ button{cursor:pointer}
 .carte-v h2{margin:6px 0 2px;font-size:21px}
 .carte-v .sous{margin:0 0 10px;color:var(--gris);font-size:14.5px;line-height:1.5}
 .carte-v label{display:block;text-align:left;font-size:13.5px;font-weight:700;margin:12px 0 4px}
-.carte-v input{width:100%;padding:13px;border:1.5px solid rgba(201,169,110,.8);border-radius:14px;font-size:16px;background:#fff}
+.carte-v input{width:100%;padding:13px;border:1.5px solid rgba(201,162,91,.8);border-radius:14px;font-size:16px;background:#fff}
 .mdp-ligne{position:relative}
 .mdp-ligne button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--terra);font-weight:700;padding:10px;font-size:13.5px}
 .btn{background:var(--terra);color:#fff;border:0;border-radius:26px;padding:13px 22px;font-weight:700;font-size:16px;min-height:48px}
@@ -47,22 +47,23 @@ button{cursor:pointer}
 .hero .nom{font-size:19px;margin:2px 0}
 .hero .role{font-size:14.5px;color:var(--gris);margin:2px 0}
 .hero .prod{font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--terra);margin:6px 0 0;font-weight:700}
-.infos{background:var(--beige);border:1.5px solid rgba(201,169,110,.55);border-radius:18px;padding:12px 14px;margin:14px 0;text-align:center}
+.infos{background:var(--beige);border:1.5px solid rgba(201,162,91,.55);border-radius:18px;padding:12px 14px;margin:14px 0;text-align:center}
 .infos .dt{font-size:15px;}
 .infos .hr{font-size:26px;font-weight:700;margin:0}
 .infos .meteo{font-size:14.5px;color:var(--gris);margin-top:4px}
 .tuiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tuile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:118px;padding:12px 8px;background:var(--beige);border:1.5px solid rgba(201,169,110,.6);border-radius:20px;color:var(--brun);font-weight:700;font-size:15.5px;text-align:center}
+.tuile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:118px;padding:12px 8px;background:var(--beige);border:1.5px solid rgba(201,162,91,.6);border-radius:20px;color:var(--brun);font-weight:700;font-size:15.5px;text-align:center}
 .tuile .e{font-size:30px;line-height:1}
 .tuile small{font-weight:400;font-size:12.5px;color:var(--gris)}
-.tuile:active{background:#ecdfd0}
+.tuile:active{background:#f3dfe3}
 .tuile.large{grid-column:1/-1;min-height:96px}
 .inst{margin-top:18px;text-align:center}
 .bandeau-b{display:inline-block;background:var(--teal);color:#fff;border-radius:12px;padding:2px 10px;font-size:12.5px;margin-left:6px}
 /* vues */
 .retour{background:none;border:0;color:var(--terra);font-weight:700;font-size:15px;padding:10px 0;min-height:44px}
+h1,h2,.hero .ttl,.carte-v h2{font-family:'Playfair Display',Georgia,serif}
 h2.vt{font-size:21px;margin:4px 0 10px}
-.boite{background:#fff;border:1.5px solid rgba(201,169,110,.55);border-radius:18px;padding:13px;margin-bottom:12px}
+.boite{background:#fff;border:1.5px solid rgba(201,162,91,.55);border-radius:18px;padding:13px;margin-bottom:12px}
 .boite .l1{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .boite .l1 strong{font-size:16px}
 .boite .l1 span{color:var(--terra);font-weight:700}
@@ -73,11 +74,11 @@ h2.vt{font-size:21px;margin:4px 0 10px}
 .etiq{display:inline-block;border-radius:10px;padding:1px 9px;font-size:12px;font-weight:700;margin-left:6px;background:#e6efe9;color:#2a6a5a}
 .etiq.ann{background:#f4dede;color:#a3301f}
 .etiq.auj{background:var(--or);color:var(--brun)}
-.rech{width:100%;padding:12px;border:1.5px solid rgba(201,169,110,.8);border-radius:14px;font-size:16px;background:#fff;margin-bottom:12px}
+.rech{width:100%;padding:12px;border:1.5px solid rgba(201,162,91,.8);border-radius:14px;font-size:16px;background:#fff;margin-bottom:12px}
 .vide{text-align:center;color:var(--gris);padding:24px 8px;line-height:1.6}
 /* formulaire */
 .form label{display:block;font-size:13.5px;font-weight:700;margin:10px 0 4px}
-.form input,.form select,.form textarea{width:100%;padding:12px;border:1.5px solid rgba(201,169,110,.8);border-radius:12px;font-size:16px;background:#fff}
+.form input,.form select,.form textarea{width:100%;padding:12px;border:1.5px solid rgba(201,162,91,.8);border-radius:12px;font-size:16px;background:#fff}
 .deux{display:flex;gap:8px}.deux>div{flex:1;min-width:0}
 .ligne-art{display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;margin-top:6px}
 .ligne-art .a{flex:3;min-width:140px}.ligne-art .q{width:70px}.ligne-art .p{width:96px}
@@ -86,11 +87,11 @@ h2.vt{font-size:21px;margin:4px 0 10px}
 .tot small{display:block;font-size:13px;font-weight:400;color:var(--gris)}
 .puce{display:inline-block;border:1.5px solid var(--or);border-radius:18px;padding:7px 14px;margin:4px 6px 4px 0;background:#fff;font-size:14px}
 .puce.on{background:var(--terra);color:#fff;border-color:var(--terra)}
-.guide-it{padding:11px 0;border-top:1px solid rgba(201,169,110,.35)}
+.guide-it{padding:11px 0;border-top:1px solid rgba(201,162,91,.35)}
 .guide-it b{font-size:15.5px}.guide-it .f{font-size:12.5px;color:var(--terra);font-weight:700}
 .guide-it .e{font-size:14px;line-height:1.5;margin-top:2px}
 .aide{font-size:13.5px;color:var(--gris);line-height:1.6;background:var(--beige);border-radius:14px;padding:11px 13px;margin:10px 0}
-.gd-card{background:#fff;border:1.5px solid rgba(201,169,110,.55);border-radius:18px;padding:13px;margin-bottom:12px}
+.gd-card{background:#fff;border:1.5px solid rgba(201,162,91,.55);border-radius:18px;padding:13px;margin-bottom:12px}
 .gd-card>b{font-size:18px;display:block;margin-bottom:4px}
 .gd-card small{color:var(--gris)}
 .btn-p{display:inline-flex;align-items:center;background:var(--terra);color:#fff;border-radius:26px;padding:12px 20px;font-weight:700;font-size:15px;min-height:46px}
@@ -592,27 +593,25 @@ function ouvrirGuide(){
   }).then(function(buf){var o=JSON.parse(new TextDecoder().decode(buf));return o.eq||[]});
 }
 VUES.guide=function(el){
-  function nomRef(r){return NOMS[r]?r+" — "+NOMS[r]:"Réf. "+r}
+  function normS(e){return(e=String(e||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim()).replace(/\b1 million\b/g,"one million")}
+  function matchS(e,t){return t.split(" ").every(function(t){return/^\d+$/.test(t)?new RegExp("(^| )"+t+"( |$)").test(e):e.indexOf(t)>=0})}
   function affiche(){
-    el.innerHTML='<h2 class="vt">Guide olfactif</h2><p class="l2">Tapez un parfum ou une référence pour trouver la correspondance. Merci de ne pas communiquer ces informations aux client(e)s.</p><input class="rech" id="g-q" type="search" placeholder="Ex. 200, Invictus, boisé…" aria-label="Chercher un parfum"><div id="g-chips"></div><p class="l2" id="g-n" style="color:#6B5E55"></p><div id="g-l"></div>';
-    var genres=[],sel="";
-    guide.forEach(function(g){if(g.g&&genres.indexOf(g.g)<0)genres.push(g.g)});
-    $("g-chips").innerHTML='<button type="button" class="puce on" data-g="">Tous</button>'+genres.map(function(g){return '<button type="button" class="puce" data-g="'+esc(g)+'">'+esc(g)+'</button>'}).join("");
+    el.innerHTML='<h2 class="vt">Guide olfactif</h2><p class="l2">Espace réservé aux conseillers(ères) de l\'équipe : tapez un parfum ou une référence pour trouver la correspondance. Merci de ne pas communiquer ces informations aux clients.</p><label for="gd-q" style="display:block;font-weight:700;margin:12px 0 6px;font-size:14px">Rechercher une référence ou un parfum</label><input class="rech" id="gd-q" type="search" placeholder="Ex. : La vie est belle, 1 million, réf 100…" autocomplete="off" style="margin-bottom:6px"><p id="gd-n" aria-live="polite" style="font-size:13px;color:var(--gris);margin:8px 0"></p><div id="gd-res"></div>';
+    guide.forEach(function(e){e.nm=NOMS[e.ref]||"";e.txt=normS("ref "+e.ref+" "+e.nm+" "+(e.eq||[]).join(" ")+" "+(e.fam||"")+" "+(e.g||""))});
     function dessine(){
-      var q=norm($("g-q").value),h="",n=0;
-      guide.forEach(function(g){
-        if(sel&&g.g!==sel)return;
-        var nom=nomRef(g.ref),ligne=norm(nom+" "+g.fam+" "+(g.eq||[]).join(" ")+" "+(g.note||""));
-        if(q&&ligne.indexOf(q)<0)return;
-        n++;if(n>150)return;
-        h+='<div class="guide-it"><b>'+esc(nom)+'</b><div class="f">'+esc([g.g,g.fam].filter(Boolean).join(" · "))+'</div><div class="e">'+esc((g.eq||[]).join(" · "))+'</div>'+(g.note?'<div class="l2">'+esc(g.note)+'</div>':'')+'</div>';
+      var q=normS($("gd-q").value),t=$("gd-res"),n=$("gd-n");t.textContent="";
+      if(q.length<2){n.textContent="Tapez au moins 2 lettres, ou une référence (ex. 100).";return}
+      var a=guide.filter(function(x){return matchS(x.txt,q)});
+      n.textContent=a.length?a.length+" référence"+(a.length>1?"s":""):"Aucun résultat.";
+      a.slice(0,80).forEach(function(e){
+        var c=document.createElement("div");c.className="gd-card";
+        var r=document.createElement("b");r.style.fontSize="18px";r.textContent="Réf. "+e.ref+(e.nm?" · "+e.nm:"");c.appendChild(r);
+        var sm=document.createElement("small");sm.textContent=[e.g,e.fam,e.note].filter(Boolean).join(" · ");c.appendChild(sm);
+        var u=document.createElement("ul");u.style.cssText="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.7;color:var(--brun)";
+        (e.eq||[]).forEach(function(x){var li=document.createElement("li");li.textContent=x;u.appendChild(li)});c.appendChild(u);t.appendChild(c);
       });
-      $("g-n").textContent=n+" résultat"+(n>1?"s":"");
-      $("g-l").innerHTML=h||'<p class="vide">Aucun résultat.</p>';
     }
-    $("g-q").addEventListener("input",dessine);
-    $("g-chips").addEventListener("click",function(e){var b=e.target.closest(".puce");if(!b)return;sel=b.getAttribute("data-g");[].forEach.call($("g-chips").children,function(x){x.classList.toggle("on",x===b)});dessine()});
-    dessine();
+    $("gd-q").addEventListener("input",dessine);dessine();
   }
   if(guide)return affiche();
   el.innerHTML='<h2 class="vt">Guide olfactif</h2><p class="vide">Chargement…</p>';
