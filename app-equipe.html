@@ -190,7 +190,10 @@ var Z="Europe/Paris";
 
 /* ---------- état ---------- */
 var jeton="",finSession=0,profil=null,ventes=null,cree=0,guide=null;
-var MEM="eqapp-compte";
+var MEM="eqapp-compte",MJT="eqapp-jt";
+function expJ(t){return +String(t||"").split(".")[1]||0}
+function gardeJ(){try{localStorage.setItem(MJT,JSON.stringify({j:jeton,x:expJ(jeton)}))}catch(e){}}
+function oubliJ(){try{localStorage.removeItem(MJT)}catch(e){}}
 function lireCompte(){try{return JSON.parse(localStorage.getItem(MEM)||"null")}catch(e){return null}}
 function ecrireCompte(o){try{localStorage.setItem(MEM,JSON.stringify(o))}catch(e){}}
 function effacerCompte(){try{localStorage.removeItem(MEM)}catch(e){}}
@@ -214,7 +217,7 @@ function afficheVerrou(msg){
   setTimeout(function(){var f=c?$("v-mdp"):$("v-prenom");try{f.focus()}catch(e){}},50);
 }
 function verrouille(msg){
-  jeton="";finSession=0;profil=null;ventes=null;guide=null;
+  oubliJ();jeton="";finSession=0;profil=null;ventes=null;guide=null;
   $("vue").innerHTML="";
   afficheVerrou(msg);
 }
@@ -244,19 +247,19 @@ $("f-login").addEventListener("submit",function(e){
   var mdp=$("v-mdp").value;
   if(!mdp)return($("v-err").textContent="Merci d'écrire votre mot de passe.");
   $("v-go").disabled=true;$("v-err").textContent="";
-  post("/equipe/connexion",{mail:mail,mdp:mdp}).then(function(r){
+  post("/equipe/connexion",{mail:mail,mdp:mdp,rester:true}).then(function(r){
     $("v-go").disabled=false;
     if(!r.ok||!r.jeton){$("v-err").textContent=r.erreur||"Connexion impossible. Réessayez.";return}
-    jeton=r.jeton;profil=r.profil||{};finSession=Date.now()+55*60*1000;
+    jeton=r.jeton;profil=r.profil||{};finSession=expJ(jeton)-60000;gardeJ();
     ecrireCompte({mail:profil.mail||mail,prenom:profil.prenom||prenom,nom:profil.nom||nom});
     $("v-mdp").value="";
     ouvre();
   }).catch(function(){$("v-go").disabled=false;$("v-err").textContent="Pas de connexion : réessayez dans un instant."});
 });
 
-/* session 1 h : verrouillage automatique */
-setInterval(function(){if(jeton&&finSession&&Date.now()>finSession)verrouille("Session terminée au bout d'1 heure. Entrez à nouveau votre mot de passe.")},15000);
-document.addEventListener("visibilitychange",function(){if(!document.hidden&&jeton&&finSession&&Date.now()>finSession)verrouille("Session terminée au bout d'1 heure. Entrez à nouveau votre mot de passe.")});
+/* session : reste ouverte sur cet appareil jusqu'à 30 jours (bouton Verrouiller pour fermer) */
+setInterval(function(){if(jeton&&finSession&&Date.now()>finSession)verrouille("Session terminée. Entrez à nouveau votre mot de passe.")},15000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&jeton&&finSession&&Date.now()>finSession)verrouille("Session terminée. Entrez à nouveau votre mot de passe.")});
 $("b-verrou").addEventListener("click",function(){verrouille("")});
 
 /* ---------- accueil ---------- */
@@ -679,8 +682,8 @@ VUES.site=function(el){
   var lc=lienPerso(false);
   el.innerHTML='<h2 class="vt">Mon site internet</h2>'+
   '<p class="l2">C\'est la page que vous avez créée sur la page équipe (votre photo, votre petit mot, vos réseaux, vos offres).</p>'+
-  '<a class="btn pleine" style="display:block;text-align:center;text-decoration:none" href="'+esc(lienPerso(true))+'" target="_blank" rel="noopener">Ouvrir ma page et la modifier</a>'+
-  '<p class="aide">Pour modifier votre page, identifiez-vous avec votre e-mail et votre mot de passe (c\'est la règle de sécurité de la page).</p>'+
+  '<a class="btn pleine" style="display:block;text-align:center;text-decoration:none" href="'+esc(lienPerso(true)+(jeton?'#ho='+jeton:''))+'" target="_blank" rel="noopener">Ouvrir ma page et la modifier</a>'+
+  '<p class="aide">Vous êtes déjà identifiée dans l\'application : votre page s\'ouvre directement, sans redemander votre mot de passe.</p>'+
   '<div class="boite"><strong>Mon lien à donner à mes client(e)s</strong><div class="l2" style="word-break:break-all;font-size:12px" id="s-lien"></div><div class="acts"><button class="petit" id="s-copie" type="button">Copier mon lien</button><button class="petit" id="s-part" type="button" hidden>Partager</button></div><p class="ok" id="s-msg" role="status"></p><p class="l2">N\'oubliez pas de donner aussi le code client(e).</p></div>';
   $("s-lien").textContent=lc;
   $("s-copie").addEventListener("click",function(){
@@ -739,6 +742,14 @@ VUES.guide=function(el){
 
 /* ---------- démarrage ---------- */
 afficheVerrou("");
+(function(){var m=null;try{m=JSON.parse(localStorage.getItem(MJT)||"null")}catch(e){}
+ if(!m||!m.j||!(m.x>Date.now()+60000)){oubliJ();return}
+ jeton=m.j;finSession=m.x-60000;
+ post("/equipe/moi",{}).then(function(r){
+  if(r&&r.ok&&r.profil){profil=r.profil;ouvre()}
+  else{oubliJ();jeton="";finSession=0}
+ }).catch(function(){jeton="";finSession=0;$("v-err").style.color="#a3301f";$("v-err").textContent="Pas de connexion : réessayez dans un instant."});
+})();
 })();
 </script>
 </body>

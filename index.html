@@ -1652,7 +1652,7 @@ var EXH_PDESC = {
 (function(){"use strict";
 var API="https://aphrodite-relais.les-essences-parfumees-d-aphrodite.workers.dev",BASE=location.origin+location.pathname;
 var $=function(i){return document.getElementById(i)};
-var jeton="",hoExp=0,rech=false;try{sessionStorage.removeItem("exh-eq-jeton");if(sessionStorage.getItem("exh-eq-r")){rech=true;sessionStorage.removeItem("exh-eq-r")}var ho=sessionStorage.getItem("exh-eq-ho");if(ho){sessionStorage.removeItem("exh-eq-ho");ho=JSON.parse(ho);if(ho&&ho.j&&ho.x>Date.now()){jeton=ho.j;hoExp=ho.x}}}catch(e){}window.EQ_JT={t:"",exp:0};
+var jeton="",hoExp=0,rech=false;try{sessionStorage.removeItem("exh-eq-jeton");if(sessionStorage.getItem("exh-eq-r")){rech=true;sessionStorage.removeItem("exh-eq-r")}var hm=/[#&]ho=([\w.\-]+)/.exec(location.hash||"");if(hm){var xx=+hm[1].split(".")[1];if(xx>Date.now())sessionStorage.setItem("exh-eq-ho",JSON.stringify({j:hm[1],x:xx}));try{history.replaceState(null,"",location.pathname+location.search)}catch(e2){}}var ho=sessionStorage.getItem("exh-eq-ho");if(ho){sessionStorage.removeItem("exh-eq-ho");ho=JSON.parse(ho);if(ho&&ho.j&&ho.x>Date.now()){jeton=ho.j;hoExp=ho.x}}}catch(e){}window.EQ_JT={t:"",exp:0};
 function eqFin(m){if(!jeton&&!compte)return;jeton="";compte=false;window.EQ_ID="";window.EQ_JT={t:"",exp:0};etatBtns();mailCompte="";$("eq-chmail").style.display="none";$("eq-qui").textContent="";try{document.dispatchEvent(new CustomEvent("eqdeco"))}catch(e){}mode("login");msg(m||"Vous êtes déconnecté(e).",true);attendu=false;verifier()}
 function eqArme(){window.EQ_JT={t:jeton,exp:Date.now()+36e5}}
 setInterval(function(){if(compte&&window.EQ_JT&&Date.now()>window.EQ_JT.exp)eqFin("Votre session a expiré (1 heure) : identifiez-vous de nouveau.")},10000);
