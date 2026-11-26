@@ -884,7 +884,7 @@ body.locked > *:not(#acc-gate){display:none!important} body.locked > #eq-pop.eqw
     </div>
   </section>
 <section id="exh-offre" style="scroll-margin-top:80px;background:var(--beige);padding:50px 20px">
-    <style>#exh-offre p,#exh-offre h2,#exh-offre h3,#exh-offre h4,#exh-offre li{text-wrap:balance}</style>
+    <style>#exh-offre p,#exh-offre h2,#exh-offre h3,#exh-offre h4,#exh-offre li{text-wrap:balance}#of-exh-bf img[data-src]{display:none!important}</style>
     <div class="si" style="max-width:760px">
       <div class="sh">
         <div class="ey">✦ En ce moment</div>
@@ -2154,7 +2154,7 @@ function cle(){var d=window.__BF_NOW?new Date(window.__BF_NOW):new Date(),o={};
  new Intl.DateTimeFormat("fr-CA",{timeZone:"Europe/Paris",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hourCycle:"h23"}).formatToParts(d).forEach(function(x){o[x.type]=x.value});
  return o.year+"-"+o.month+"-"+o.day+"T"+o.hour}
 /* Black Friday EXHALESSENCE : affiché dès le 26/11 pour les essais (début normal : 27/11 à 6 h), fin le 29/11 à 23 h 59 */
-var BF_DEBUT="2026-11-26T00",BF_FIN="2026-11-29T23",IMG_DEBUT="2026-11-27T06";
+var BF_DEBUT="2026-11-26T00",BF_FIN="2026-11-29T23",IMG_DEBUT="2026-11-26T00";
 window.ofBfActif=function(){var c=cle();return BF_DEBUT<=c&&c<=BF_FIN};
 window.ofMaj=function(){try{var c=cle(),bf=window.ofBfActif(),e=function(i){return document.getElementById(i)};
  e("of-exh-bf").hidden=!bf;e("of-exh-t").hidden=!window.__ofTxt;e("of-exh-vide").hidden=bf||!!window.__ofTxt;
